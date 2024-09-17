@@ -1,5 +1,7 @@
+import "dotenv/config"
 import path from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
+import { getEnv } from "./extensions/env.extensions";
 
 const buildSettings = (): DataSourceOptions => {
     const entitiesPath: string = path.join(__dirname, './entities/**.{ts,js}');
@@ -15,18 +17,26 @@ const buildSettings = (): DataSourceOptions => {
         };
     }
     
-    const dbUrl: string | undefined = process.env.DB_URL;
-    const dbType: string | undefined = process.env.DB_TYPE;
-
-    if (!dbUrl) throw new Error("Missing env var: 'DB_URL'");
-    if (!dbType) throw new Error("Missing env var: 'DB_TYPE'");
+    const database = getEnv("DB_NAME");
+    const type = getEnv("DB_TYPE");
+    const port = Number( getEnv("DB_PORT") );
+    const username = getEnv("DB_USERNAME");
+    const password = getEnv("DB_PASSWORD");
+    const host = getEnv("DB_HOST");
 
     return {
-        type: dbType as "postgres" | "mssql",
-        url: dbUrl,
+        type: type as "postgres" | "mssql",
+        host,
+        port,
+        username,
+        password,
+        database,
         logging: true,
         entities: [entitiesPath],
         migrations: [migrationPath],
+        options: {
+            trustServerCertificate: true
+        }
     };
 }
 
