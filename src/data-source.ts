@@ -15,11 +15,11 @@ const buildSettings = (): DataSourceOptions => {
         };
     }
     
-    const dbUrl: string | undefined = process.env.DATABASE_URL;
-    const dbType: string | undefined = process.env.DATABASE_TYPE;
+    const dbUrl: string | undefined = process.env.DB_URL;
+    const dbType: string | undefined = process.env.DB_TYPE;
 
-    if (!dbUrl) throw new Error("Missing env var: 'DATABASE_URL'");
-    if (!dbType) throw new Error("Missing env var: 'DATABASE_TYPE'");
+    if (!dbUrl) throw new Error("Missing env var: 'DB_URL'");
+    if (!dbType) throw new Error("Missing env var: 'DB_TYPE'");
 
     return {
         type: dbType as "postgres" | "mssql",
