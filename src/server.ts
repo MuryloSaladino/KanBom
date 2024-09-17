@@ -1,5 +1,7 @@
 import AppDataSource from "./data-source"
 import app from "./app";
+import User from "./entities/User.entity";
+import { UserRole } from "./enums/UserRole";
 
 const serverFacade = async () => {
     
@@ -10,6 +12,13 @@ const serverFacade = async () => {
     app.listen(PORT, () => {
         console.log(`\nServer executing on http://localhost:${PORT}/`)
     })
+
+    const user = new User()
+    user.email = "email"
+    user.role = UserRole.ADMIN
+    const repo = AppDataSource.getRepository(User)
+    const creation = repo.create(user)
+    await repo.save(creation) 
 }
 
 serverFacade()
