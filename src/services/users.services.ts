@@ -37,12 +37,22 @@ export async function getUserService(id:string): Promise<User> {
     return user;
 }
 
-export async function updateUserDetailsService(id:string, payload:TUserUpdate) {
+export async function updateUserDetailsService(id:string, payload:TUserUpdate): Promise<void> {
     
     const repo = AppDataSource.getRepository(UserDetails);
 
     if(!await repo.exists({ where: { id } }))
         throw new AppError("User not found", 404);
 
-    await repo.update(id, payload)
+    await repo.update(id, payload);
+}
+
+export async function deleteUserService(id:string): Promise<void> {
+    
+    const repo = AppDataSource.getRepository(User);
+    
+    if(!await repo.exists({ where: { id } }))
+        throw new AppError("User not found", 404);
+
+    await repo.softDelete(id);
 }
