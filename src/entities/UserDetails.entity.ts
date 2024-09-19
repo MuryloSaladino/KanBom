@@ -1,8 +1,9 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, Timestamp } from "typeorm";
 import User from "./User.entity";
+import BaseEntity from "./BaseEntity.entity";
 
 @Entity("user_details")
-export default class UserDetails {
+export default class UserDetails extends BaseEntity {
 
     @PrimaryColumn()
     userId?: string;
