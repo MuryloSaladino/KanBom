@@ -1,19 +1,11 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, Timestamp } from "typeorm";
-import User from "./User.entity";
+import { Column, Entity } from "typeorm";
 import BaseEntity from "./BaseEntity.entity";
 
 @Entity("user_details")
 export default class UserDetails extends BaseEntity {
 
-    @PrimaryColumn()
-    userId?: string;
-
-    @OneToOne(() => User, { cascade: true })
-    @JoinColumn({ name: "userId" })
-    user?: User;
-
     @Column({ type: "timestamp" })
-    birthdate?: Timestamp;
+    birthdate?: Date;
 
     @Column({ type: "varchar", length: 50 })
     firstName?: string;
@@ -22,5 +14,5 @@ export default class UserDetails extends BaseEntity {
     lastName?: string;
 
     @Column({ type: "varchar", length: 1024 })
-    profilePicture?: string
+    profilePicture?: string;
 }
