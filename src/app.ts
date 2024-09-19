@@ -3,8 +3,8 @@ import cors from "cors";
 
 import "express-async-errors";
 import "reflect-metadata";
-import { handleError } from "./middlewares/handleError.middleware";
 import userRouter from "./routers/users.routes";
+import handleError from "./middlewares/handleError.middleware";
 
 
 const app = express();

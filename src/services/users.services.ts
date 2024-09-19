@@ -1,4 +1,3 @@
-import { hashSync } from "bcryptjs";
 import AppDataSource from "../data-source";
 import User from "../entities/User.entity";
 import UserDetails from "../entities/UserDetails.entity";
@@ -55,4 +54,11 @@ export async function deleteUserService(id:string): Promise<void> {
         throw new AppError("User not found", 404);
 
     await repo.softDelete(id);
+}
+
+export async function getUsersService(filters:{ [key: string]: any }) {
+    
+    const repo = AppDataSource.getRepository(User);
+
+    return await repo.find({})
 }
