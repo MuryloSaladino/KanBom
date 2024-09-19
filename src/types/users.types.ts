@@ -10,3 +10,5 @@ export type TUserDetailsCreation = {
     lastName: string;
     profilePicture?: string | null;
 }
+
+export type TUserUpdate = Partial<TUserDetailsCreation>
