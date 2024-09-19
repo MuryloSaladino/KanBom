@@ -4,8 +4,8 @@ import BaseEntity from "./BaseEntity.entity";
 @Entity("user_details")
 export default class UserDetails extends BaseEntity {
 
-    @Column({ type: "timestamp" })
-    birthdate?: Date;
+    @Column({ type: "datetime" })
+    birthdate?: string;
 
     @Column({ type: "varchar", length: 50 })
     firstName?: string;
@@ -13,6 +13,6 @@ export default class UserDetails extends BaseEntity {
     @Column({ type: "varchar", length: 150 })
     lastName?: string;
 
-    @Column({ type: "varchar", length: 1024 })
-    profilePicture?: string;
+    @Column({ type: "varchar", length: 1024, nullable: false })
+    profilePicture?: string | null;
 }
