@@ -10,7 +10,7 @@ export default class Team extends BaseEntity {
     name?: string;
 
     @ManyToOne(() => User, { onDelete: "SET NULL", nullable: true })
-    owner?: string;
+    owner?: User;
 
     @RelationId((team:Team) => team.owner)
     ownerId?: string;
