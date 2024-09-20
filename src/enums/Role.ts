@@ -1,7 +1,7 @@
 export enum Role {
-    OWNER,
-    EDITOR,
-    READER
+    OWNER = 2,
+    EDITOR = 1,
+    READER = 0
 }
 
 export function roleToString(role:Role): string {

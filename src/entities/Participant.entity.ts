@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, RelationId } from "typeorm";
 import BaseEntity from "./BaseEntity.entity";
 import { Role, roleToString, stringToRole } from "../enums/Role";
 import User from "./User.entity";
@@ -17,6 +17,12 @@ export default class Participant extends BaseEntity {
     @ManyToOne(() => User, (user) => user.participations, { cascade: true })
     user?: User;
 
+    @RelationId((participant:Participant) => participant.user)
+    userId?: string;
+
     @ManyToOne(() => Project, (project) => project.participants, { cascade: true })
     project?: Project;
+
+    @RelationId((participant:Participant) => participant.project)
+    projectId?: string;
 }
