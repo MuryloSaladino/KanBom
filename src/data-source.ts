@@ -1,7 +1,7 @@
 import "dotenv/config"
 import path from "path";
 import { DataSource, DataSourceOptions } from "typeorm";
-import { getEnv } from "./extensions/env.extensions";
+import { getEnv } from "./utils/env.utils";
 
 const buildSettings = (): DataSourceOptions => {
     const entitiesPath: string = path.join(__dirname, './entities/**.{ts,js}');
