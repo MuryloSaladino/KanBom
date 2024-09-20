@@ -1,16 +1,12 @@
 import User from "../entities/User.entity";
+import UserDetails from "../entities/UserDetails.entity";
+
+export type TUserDetailsCreation = Omit<UserDetails, "id" | "createdAt" | "updatedAt" | "deletedAt">;
 
 export type TUserCreation = {
     email: string;
     password: string;
     details: TUserDetailsCreation;
-}
-
-export type TUserDetailsCreation = {
-    birthdate: string;
-    firstName: string;
-    lastName: string;
-    profilePicture?: string | null;
 }
 
 export type TUserUpdate = Partial<TUserDetailsCreation>;
