@@ -14,9 +14,9 @@ export default class Participant extends BaseEntity {
     })
     role?: Role;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, (user) => user.participations, { cascade: true })
     user?: User;
 
-    @ManyToOne(() => Project)
+    @ManyToOne(() => Project, (project) => project.participants, { cascade: true })
     project?: Project;
 }

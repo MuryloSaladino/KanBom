@@ -1,9 +1,9 @@
 import { Column, Entity } from "typeorm";
 import BaseEntity from "./BaseEntity.entity";
 
-// @Entity("notifications")
+@Entity("notifications")
 export default class Notification extends BaseEntity {
 
-    @Column({ type: "json" })
+    @Column({ type: "nvarchar", length: "MAX" })
     source?: string;
 }

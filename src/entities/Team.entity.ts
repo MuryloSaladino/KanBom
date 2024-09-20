@@ -1,6 +1,7 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import User from "./User.entity";
 import BaseEntity from "./BaseEntity.entity";
+import Member from "./Member.entity";
 
 @Entity("teams")
 export default class Team extends BaseEntity {
@@ -10,4 +11,7 @@ export default class Team extends BaseEntity {
 
     @ManyToOne(() => User, { onDelete: "SET NULL", nullable: true })
     owner?: string;
+
+    @OneToMany(() => Member, (member) => member.team)
+    members?: Member[];
 }

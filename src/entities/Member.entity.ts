@@ -6,9 +6,9 @@ import Team from "./Team.entity";
 @Entity("members")
 export default class Member extends BaseEntity {
 
-    @ManyToOne(() => User, { cascade: true })
+    @ManyToOne(() => User, (user) => user.isMemberIn, { cascade: true })
     user?: User;
 
-    @ManyToOne(() => Team, { cascade: true })
+    @ManyToOne(() => Team, (team) => team.members, { cascade: true })
     team?: Team
 }
