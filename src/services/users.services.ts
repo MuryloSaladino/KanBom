@@ -1,11 +1,13 @@
 import AppDataSource from "../data-source";
 import User from "../entities/User.entity";
 import UserDetails from "../entities/UserDetails.entity";
-import { TUserCreation, TUserUpdate } from "../types/users.types";
+import { TUserCreation, TUserResponse, TUserUpdate } from "../types/users.types";
 import dayjs from "dayjs";
 import AppError from "../errors";
+import Team from "../entities/Team.entity";
+import Member from "../entities/Member.entity";
 
-export async function createUserService(payload:TUserCreation): Promise<User> {
+export async function createUserService(payload:TUserCreation): Promise<TUserResponse> {
 
     const detailsRepo = AppDataSource.getRepository(UserDetails);
     const userRepo = AppDataSource.getRepository(User);
@@ -19,10 +21,12 @@ export async function createUserService(payload:TUserCreation): Promise<User> {
         details: details
     });
 
-    return await userRepo.save(user);
+    await userRepo.save(user);
+    user.password = undefined;
+    return user;
 }
 
-export async function getUserService(id:string): Promise<User> {
+export async function getUserService(id:string): Promise<TUserResponse> {
     
     const repo = AppDataSource.getRepository(User);
     const user = await repo.findOne({ 
@@ -31,19 +35,19 @@ export async function getUserService(id:string): Promise<User> {
     })
 
     if(!user) throw new AppError("User not found", 404);
-
-    user.password = undefined;
     return user;
 }
 
-export async function updateUserDetailsService(id:string, payload:TUserUpdate): Promise<void> {
+export async function updateUserDetailsService(id:string, payload:TUserUpdate): Promise<TUserResponse> {
     
-    const repo = AppDataSource.getRepository(UserDetails);
+    const repo = AppDataSource.getRepository(User);
 
-    if(!await repo.exists({ where: { id } }))
-        throw new AppError("User not found", 404);
+    const user = await repo.findOne({ where: { id }, relations: { details: true } })
+    if(!user) throw new AppError("User not found", 404);
 
-    await repo.update(id, payload);
+    user.details = { ...user.details, ...payload }
+
+    return await repo.save(user);
 }
 
 export async function deleteUserService(id:string): Promise<void> {
@@ -56,9 +60,20 @@ export async function deleteUserService(id:string): Promise<void> {
     await repo.softDelete(id);
 }
 
-export async function getUsersService(filters:{ [key: string]: any }) {
+
+export async function getUsersService(teamId:string|undefined) {
+    
+    if(teamId) {
+        return await AppDataSource
+            .getRepository(User)
+            .createQueryBuilder()
+            .select()
+            .from(User, "u")
+            .leftJoin(Member, "m")
+            .leftJoin(Team, "t")
+            .where("t.id = :teamId", { teamId })
+    }
     
     const repo = AppDataSource.getRepository(User);
-
-    return await repo.find({})
+    return await repo.find()
 }

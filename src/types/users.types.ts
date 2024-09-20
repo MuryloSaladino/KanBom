@@ -1,3 +1,5 @@
+import User from "../entities/User.entity";
+
 export type TUserCreation = {
     email: string;
     password: string;
@@ -11,4 +13,6 @@ export type TUserDetailsCreation = {
     profilePicture?: string | null;
 }
 
-export type TUserUpdate = Partial<TUserDetailsCreation>
+export type TUserUpdate = Partial<TUserDetailsCreation>;
+
+export type TUserResponse = Omit<User, "password">;
