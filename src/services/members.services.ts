@@ -25,8 +25,9 @@ export async function inviteMemberService(userId:string, teamId:string) {
     )
 
     const notification = notificationRepo.create({
-        action: `/api/teams/invite/${token}`,
-        content: `You have been invited to work with ${team.name}!`
+        action: `/api/members/invite/${token}`,
+        content: `You have been invited to work with ${team.name}!`,
+        user
     })
 
     await notificationRepo.save(notification);
