@@ -51,7 +51,6 @@ export async function updateUserDetailsService(id:string, payload:TUserUpdate): 
 export async function deleteUserService(id:string): Promise<void> {
     
     const repo = AppDataSource.getRepository(User);
-    console.log("id:", id);
     
     if(!await repo.exists({ where: { id } }))
         throw new AppError("User not found", 404);

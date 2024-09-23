@@ -4,6 +4,6 @@ import { getTeamMembersController } from "../controllers/members.controllers";
 
 const memberRouter = Router();
 
-memberRouter.get("/:teamId/members", authenticate, getTeamMembersController);
+memberRouter.get("/teams/:teamId", authenticate, getTeamMembersController);
 
 export default memberRouter;
