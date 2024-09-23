@@ -6,20 +6,20 @@ import AppError from "../errors";
 import Notification from "../entities/Notification.entity";
 import Member from "../entities/Member.entity";
 
-export async function inviteMemberService(userId:string, teamId:string) {
+export async function inviteMemberService(email:string, teamId:string) {
     
     const notificationRepo = AppDataSource.getRepository(Notification);
     const userRepo = AppDataSource.getRepository(User);
     const teamRepo = AppDataSource.getRepository(Team);
 
-    const user = await userRepo.findOneBy({ id: userId });
+    const user = await userRepo.findOneBy({ email });
     if(!user) throw new AppError("User not found", 404);
 
     const team = await teamRepo.findOneBy({ id: teamId });
     if(!team) throw new AppError("Team not found", 404);
 
     const token = sign(
-        { userId, teamId },
+        { email, teamId },
         String(process.env.SECRET_KEY),
         {  }
     )
@@ -40,13 +40,13 @@ export async function acceptTeamInvitationService(token:string) {
         async (err:any, decoded:any) => {
             if(err) throw new AppError(err.message, 401);
             
-            const { teamId, userId } = decoded;
-            if(!teamId || !userId) throw new AppError("Invalid jwt", 401);
+            const { teamId, email } = decoded;
+            if(!teamId || !email) throw new AppError("Invalid jwt", 401);
 
             const userRepo = AppDataSource.getRepository(User);
             const teamRepo = AppDataSource.getRepository(Team);
 
-            const user = await userRepo.findOneBy({ id: userId });
+            const user = await userRepo.findOneBy({ email });
             const team = await teamRepo.findOneBy({ id: teamId });
             if(!user || !team) throw new AppError("That invitation is not valid anymore.");
 
