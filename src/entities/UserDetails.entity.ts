@@ -13,6 +13,6 @@ export default class UserDetails extends BaseEntity {
     @Column({ type: "varchar", length: 150 })
     lastName?: string;
 
-    @Column({ type: "varchar", length: 1024, nullable: true })
-    profilePicture?: string;
+    @Column({ type: "varchar", length: 1024, nullable: true, default: null })
+    profilePicture?: string | null;
 }

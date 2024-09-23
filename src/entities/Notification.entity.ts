@@ -5,7 +5,7 @@ import User from "./User.entity";
 @Entity("notifications")
 export default class Notification extends BaseEntity {
 
-    @Column({ type: "nvarchar", length: 5000 })
+    @Column({ type: "varchar", length: "MAX" })
     action?: string;
 
     @Column({ type: "nvarchar", length: "MAX" })

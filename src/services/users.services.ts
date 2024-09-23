@@ -4,8 +4,6 @@ import UserDetails from "../entities/UserDetails.entity";
 import { TUserCreation, TUserResponse, TUserUpdate } from "../types/users.types";
 import dayjs from "dayjs";
 import AppError from "../errors";
-import Team from "../entities/Team.entity";
-import Member from "../entities/Member.entity";
 
 export async function createUserService(payload:TUserCreation): Promise<TUserResponse> {
 
@@ -53,9 +51,10 @@ export async function updateUserDetailsService(id:string, payload:TUserUpdate): 
 export async function deleteUserService(id:string): Promise<void> {
     
     const repo = AppDataSource.getRepository(User);
+    console.log("id:", id);
     
     if(!await repo.exists({ where: { id } }))
         throw new AppError("User not found", 404);
 
-    await repo.softDelete(id);
+    await repo.softDelete({ id });
 }
