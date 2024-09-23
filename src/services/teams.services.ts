@@ -1,4 +1,4 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import AppDataSource from "../data-source";
 import Team from "../entities/Team.entity";
 import User from "../entities/User.entity";
@@ -42,4 +42,18 @@ export async function addToTeamService(userId:string, teamId:string) {
     })
 
     await notificationRepo.save(notification);
+}
+
+export async function entryTeamService(jwt:string) {
+    
+    const [_bearer, token] = jwt.split(" ");
+
+    verify(
+        token,
+        String(process.env.SECRET_KEY),
+        (err:any, decoded:any) => {
+            if(err) throw new AppError(err.message, 401)
+            console.log(decoded.sub);
+        }
+    )
 }

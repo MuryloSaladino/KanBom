@@ -14,7 +14,6 @@ export default async function authenticate(req:Request, res:Response, next:NextF
         String(process.env.SECRET_KEY),
         (err:any, decoded:any) => {
             if(err) throw new AppError(err.message, 401)
-            console.log(decoded.sub);
             res.locals.userId = decoded.sub
         }
     )
