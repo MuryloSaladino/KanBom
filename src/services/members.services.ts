@@ -66,8 +66,9 @@ export async function getTeamMembersService(teamId:string) {
     return await AppDataSource
         .getRepository(User)
         .createQueryBuilder("u")
-        .innerJoin(Member, "m", "m.userId = u.id")
-        .innerJoin(Team, "t", "m.teamId = t.id")
+        .leftJoinAndSelect("u.details", "ud")
+        .innerJoin("members", "m", "m.userId = u.id")
+        .innerJoin("teams", "t", "m.teamId = t.id")
         .where("t.id = :teamId", { teamId })
         .getMany();
 }
