@@ -59,21 +59,3 @@ export async function deleteUserService(id:string): Promise<void> {
 
     await repo.softDelete(id);
 }
-
-
-export async function getUsersService(teamId:string|undefined) {
-    
-    if(teamId) {
-        return await AppDataSource
-            .getRepository(User)
-            .createQueryBuilder()
-            .select()
-            .from(User, "u")
-            .leftJoin(Member, "m")
-            .leftJoin(Team, "t")
-            .where("t.id = :teamId", { teamId })
-    }
-    
-    const repo = AppDataSource.getRepository(User);
-    return await repo.find()
-}
