@@ -3,9 +3,9 @@ import cors from "cors";
 
 import "express-async-errors";
 import "reflect-metadata";
-import userRouter from "./routers/users.routes";
+import userRouter from "./routes/users.routes";
 import handleError from "./middlewares/handleError.middleware";
-import loginRouter from "./routers/login.routes";
+import loginRouter from "./routes/login.routes";
 
 
 const app = express();
