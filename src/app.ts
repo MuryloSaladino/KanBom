@@ -6,6 +6,7 @@ import "reflect-metadata";
 import userRouter from "./routes/users.routes";
 import handleError from "./middlewares/handleError.middleware";
 import loginRouter from "./routes/login.routes";
+import teamRouter from "./routes/teams.routes";
 
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors());
 
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+app.use("/api/teams", teamRouter);
 
 app.use(handleError);
 
