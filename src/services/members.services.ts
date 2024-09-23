@@ -33,10 +33,7 @@ export async function inviteMemberService(userId:string, teamId:string) {
     await notificationRepo.save(notification);
 }
 
-export async function acceptTeamInvitationService(jwt:string) {
-    
-    const [_bearer, token] = jwt.split(" ");
-
+export async function acceptTeamInvitationService(token:string) {
     verify(
         token,
         String(process.env.SECRET_KEY),
@@ -68,10 +65,9 @@ export async function getTeamMembersService(teamId:string) {
 
     return await AppDataSource
         .getRepository(User)
-        .createQueryBuilder()
-        .select()
-        .innerJoin(Member, "members")
-        .innerJoin(Team, "teams")
-        .where("teams.id = :teamId", { teamId })
+        .createQueryBuilder("u")
+        .innerJoin(Member, "m", "m.userId = u.id")
+        .innerJoin(Team, "t", "m.teamId = t.id")
+        .where("t.id = :teamId", { teamId })
         .getMany();
 }
