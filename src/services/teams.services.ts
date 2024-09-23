@@ -1,10 +1,9 @@
-import { sign, verify } from "jsonwebtoken";
 import AppDataSource from "../data-source";
+import Member from "../entities/Member.entity";
 import Team from "../entities/Team.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors";
-import { TTeamCreation } from "../types/teams.types";
-import Notification from "../entities/Notification.entity";
+import { TTeamCreation, TTeamUpdate } from "../types/teams.types";
 
 export async function createTeamService(userId:string, payload:TTeamCreation): Promise<Team> {
     
@@ -18,42 +17,33 @@ export async function createTeamService(userId:string, payload:TTeamCreation): P
     return await teamRepo.save(team);
 }
 
-export async function addToTeamService(userId:string, teamId:string) {
-    
-    const notificationRepo = AppDataSource.getRepository(Notification);
-    const userRepo = AppDataSource.getRepository(User);
-    const teamRepo = AppDataSource.getRepository(Team);
+export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
 
-    const user = await userRepo.findOneBy({ id: userId });
-    if(!user) throw new AppError("User not found", 404);
+    const repo = AppDataSource.getRepository(Team);
 
-    const team = await teamRepo.findOneBy({ id: teamId });
+    const team = await repo.findOneBy({ id: teamId });
     if(!team) throw new AppError("Team not found", 404);
 
-    const token = sign(
-        { userId, teamId },
-        String(process.env.SECRET_KEY),
-        {  }
-    )
-
-    const notification = notificationRepo.create({
-        action: `/api/teams/invite/${token}`,
-        content: `You have been invited to work with ${team.name}!`
-    })
-
-    await notificationRepo.save(notification);
+    return await repo.save({ ...team, ...payload });
 }
 
-export async function entryTeamService(jwt:string) {
+export async function getTeamMembersService(teamId:string) {
     
-    const [_bearer, token] = jwt.split(" ");
+    const repo = AppDataSource.getRepository(Team);
 
-    verify(
-        token,
-        String(process.env.SECRET_KEY),
-        (err:any, decoded:any) => {
-            if(err) throw new AppError(err.message, 401)
-            console.log(decoded.sub);
-        }
-    )
+    const team = await repo.findOne({ where: { id: teamId }, relations: { members: true } });
+    if(!team) throw new AppError("Team not found", 404);
+
+    return await AppDataSource
+        .getRepository(User)
+        .createQueryBuilder()
+        .select()
+        .innerJoin(Member, "members")
+        .innerJoin(Team, "teams")
+        .where("teams.id = :teamId", { teamId })
+        .getMany();
+}
+
+export async function getUserTeamsService(userId:string) {
+    
 }
