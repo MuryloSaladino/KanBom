@@ -32,7 +32,7 @@ export async function inviteMemberService(userId:string, teamId:string) {
     await notificationRepo.save(notification);
 }
 
-export async function acceptInvitationService(jwt:string) {
+export async function acceptTeamInvitationService(jwt:string) {
     
     const [_bearer, token] = jwt.split(" ");
 
