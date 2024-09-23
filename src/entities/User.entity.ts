@@ -9,7 +9,7 @@ import Notification from "./Notification.entity";
 @Entity("users")
 export default class User extends BaseEntity {
 
-    @Column({ type: "varchar", length: 50 })
+    @Column({ type: "varchar", length: 50, unique: true })
     email?: string;
 
     @Column({ type: "varchar", length: 255, select: false })
@@ -23,7 +23,7 @@ export default class User extends BaseEntity {
     participations?: Participant[];
 
     @OneToMany(() => Member, (member) => member.user)
-    isMemberIn?: Member[];
+    memberIn?: Member[];
 
     @OneToMany(() => Notification, (notification) => notification.user)
     notifications?: Member[];
