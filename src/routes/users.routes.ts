@@ -4,8 +4,8 @@ import { createUserController, deleteUserController, getUserByIdController, upda
 const userRouter = Router();
 
 userRouter.post("", createUserController);
-userRouter.get("/:userId", getUserByIdController);
-userRouter.patch("/:userId", updateUserController);
-userRouter.delete("/:userId", deleteUserController);
+userRouter.get("", getUserByIdController);
+userRouter.patch("", updateUserController);
+userRouter.delete("", deleteUserController);
 
 export default userRouter;
