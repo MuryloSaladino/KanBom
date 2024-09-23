@@ -1,5 +1,4 @@
 import AppDataSource from "../data-source";
-import Member from "../entities/Member.entity";
 import Team from "../entities/Team.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors";
@@ -27,22 +26,7 @@ export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
     return await repo.save({ ...team, ...payload });
 }
 
-export async function getTeamMembersService(teamId:string) {
-    
-    const repo = AppDataSource.getRepository(Team);
 
-    const team = await repo.findOne({ where: { id: teamId }, relations: { members: true } });
-    if(!team) throw new AppError("Team not found", 404);
-
-    return await AppDataSource
-        .getRepository(User)
-        .createQueryBuilder()
-        .select()
-        .innerJoin(Member, "members")
-        .innerJoin(Team, "teams")
-        .where("teams.id = :teamId", { teamId })
-        .getMany();
-}
 
 export async function getUserTeamsService(userId:string) {
     

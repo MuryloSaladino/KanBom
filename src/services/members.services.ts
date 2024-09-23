@@ -57,3 +57,20 @@ export async function acceptInvitationService(jwt:string) {
         }
     )
 }
+
+export async function getTeamMembersService(teamId:string) {
+    
+    const repo = AppDataSource.getRepository(Team);
+
+    const team = await repo.findOne({ where: { id: teamId }, relations: { members: true } });
+    if(!team) throw new AppError("Team not found", 404);
+
+    return await AppDataSource
+        .getRepository(User)
+        .createQueryBuilder()
+        .select()
+        .innerJoin(Member, "members")
+        .innerJoin(Team, "teams")
+        .where("teams.id = :teamId", { teamId })
+        .getMany();
+}
