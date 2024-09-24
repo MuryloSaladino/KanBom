@@ -45,7 +45,7 @@ export async function deleteProjectService(id: string): Promise<void> {
     //verificar token:
     /*
         - pegar o id do usuário (req.locals.userId)
-        - pegar o id do projeto atual
+        - pegar o id do projeto atual - recebe na função
         - Procurar no projeto participantes com esse id
         - Verificar se o Role é "Owner"
             - não tem participante => 403 - unauthorized

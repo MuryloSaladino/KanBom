@@ -9,6 +9,7 @@ import loginRouter from "./routes/login.routes";
 import teamRouter from "./routes/teams.routes";
 import notificationsRouter from "./routes/notification.routes";
 
+import projectRouter from "./routes/project.routes";
 
 const app = express();
 
@@ -19,6 +20,8 @@ app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
 app.use("/api/teams", teamRouter);
 app.use("/api/notifications", notificationsRouter);
+
+app.use("/api/projects", projectRouter);
 
 app.use(handleError);
 
