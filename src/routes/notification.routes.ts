@@ -1,9 +1,10 @@
 import { Router } from "express";
 import authenticate from "../middlewares/authenticate.middleware";
-import { getNotificationsController } from "../controllers/notifications.controllers";
+import { deleteNotificationController, getNotificationsController } from "../controllers/notifications.controllers";
 
 const notificationsRouter = Router();
 
 notificationsRouter.get("", authenticate, getNotificationsController);
+notificationsRouter.delete("/:notificationId", authenticate, deleteNotificationController);
 
 export default notificationsRouter;
