@@ -31,6 +31,8 @@ export async function getTeamService(teamId:string) {
         where: { id: teamId },
         relations: { members: { user: { details: true } } }
     });
+    if(!found) throw new AppError("Team not found", 404);
+    
     return found;
 }
 
