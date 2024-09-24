@@ -53,7 +53,7 @@ export async function deleteTeamService(teamId:string) {
     const team = await repo.findOneBy({ id: teamId });
     if(!team) throw new AppError("Team not found", 404);
 
-    await repo.softDelete(team);
+    await repo.save({ ...team, deletedAt: new Date() });
 }
 
 export async function getUserTeamsService(userId:string) {
