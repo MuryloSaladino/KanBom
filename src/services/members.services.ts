@@ -74,11 +74,19 @@ export async function getTeamMembersService(teamId:string) {
 }
 
 export async function removeMemberService(teamId:string, userId:string) {
-    
+
+    const teamRepo = AppDataSource.getRepository(Team);
+
+    const team = await teamRepo.findOneBy({ id: teamId });
+    if(!team) throw new AppError("Team not found", 404);
+
+    if(team.ownerId == userId)
+        throw new AppError("You can't leave the team before passing along the ownership");
+
     await AppDataSource.getRepository(Member)
         .createQueryBuilder("t")
         .where("m.teamId = :teamId", { teamId })
         .andWhere("m.userId = :userId", { userId })
         .delete()
-        .execute()
+        .execute();
 }
