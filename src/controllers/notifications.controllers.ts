@@ -7,6 +7,6 @@ export async function getNotificationsController(req:Request, res:Response) {
 }
 
 export async function deleteNotificationController(req:Request, res:Response) {
-    await deleteNotificationService(req.params.notificationId);
+    await deleteNotificationService(res.locals.userId, req.params.notificationId);
     return res.status(204).send();
 }

@@ -16,12 +16,17 @@ export async function getNotificationsService(userId:string) {
     return user.notifications || [];
 }
 
-export async function deleteNotificationService(notificationId:string) {
-    
+export async function deleteNotificationService(userid:string, notificationId:string) {
+
     const repo = AppDataSource.getRepository(Notification);
 
-    const notification = await repo.findOneBy({ id: notificationId });
-    if(!notification) throw new AppError("Notification not found", 404);
+    const found = await repo
+        .createQueryBuilder("n")
+        .innerJoin(User, "u")
+        .where("u.id = :userId", { userid })
+        .andWhere("n.id = :notificationId", { notificationId })
+        .getOne();
+    if(!found) throw new AppError("Notification not found", 404);
 
-    await repo.save({ ...notification, deletedAt: new Date() });
+    await repo.save({ ...found, deletedAt: new Date() });
 }
