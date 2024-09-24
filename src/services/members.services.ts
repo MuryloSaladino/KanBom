@@ -72,3 +72,13 @@ export async function getTeamMembersService(teamId:string) {
         .where("t.id = :teamId", { teamId })
         .getMany();
 }
+
+export async function removeMemberService(teamId:string, userId:string) {
+    
+    await AppDataSource.getRepository(Member)
+        .createQueryBuilder("t")
+        .where("m.teamId = :teamId", { teamId })
+        .andWhere("m.userId = :userId", { userId })
+        .delete()
+        .execute()
+}

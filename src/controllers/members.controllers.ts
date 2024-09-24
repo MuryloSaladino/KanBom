@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { acceptTeamInvitationService, getTeamMembersService, inviteMemberService } from "../services/members.services";
+import { acceptTeamInvitationService, getTeamMembersService, inviteMemberService, removeMemberService } from "../services/members.services";
 
 export async function getTeamMembersController(req:Request, res:Response) {
     const service = await getTeamMembersService(req.params.teamId);
@@ -13,5 +13,10 @@ export async function inviteToTeamController(req:Request, res:Response) {
 
 export async function acceptInviteController(req:Request, res:Response) {
     await acceptTeamInvitationService(req.params.token);
+    return res.status(204).send();
+}
+
+export async function removeMemberController(req:Request, res:Response) {
+    await removeMemberService(req.params.userId, req.params.userId);
     return res.status(204).send();
 }
