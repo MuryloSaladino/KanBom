@@ -36,6 +36,16 @@ export async function getTeamService(teamId:string) {
     return team;
 }
 
+export async function getTeamsByUserService(userId:string) {
+    
+    return await AppDataSource.getRepository(Team)
+        .createQueryBuilder("t")
+        .innerJoin(Member, "m")
+        .innerJoin(User, "u")
+        .where("u.id = :userId", { userId })
+        .getMany()
+}
+
 export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
 
     const repo = AppDataSource.getRepository(Team);
@@ -54,8 +64,4 @@ export async function deleteTeamService(teamId:string) {
     if(!team) throw new AppError("Team not found", 404);
 
     await repo.save({ ...team, deletedAt: new Date() });
-}
-
-export async function getUserTeamsService(userId:string) {
-    
 }
