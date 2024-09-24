@@ -24,16 +24,14 @@ export async function createTeamService(userId:string, payload:TTeamCreation): P
 }
 
 export async function getTeamService(teamId:string) {
-    
-    const repo = AppDataSource.getRepository(Team);
-    
-    const team = await repo.findOne({
-        where: { id: teamId },
-        relations: { members: true, owner: true }
-    })
-    if(!team) throw new AppError("Team not found", 404);
 
-    return team;
+    const repo = AppDataSource.getRepository(Team);
+
+    const found = await repo.findOne({
+        where: { id: teamId },
+        relations: { members: { user: { details: true } } }
+    });
+    return found;
 }
 
 export async function getTeamsByUserService(userId:string) {
