@@ -5,19 +5,15 @@ import { TUserCreation, TUserResponse, TUserUpdate } from "../types/users.types"
 import dayjs from "dayjs";
 import AppError from "../errors";
 
-export async function createUserService(payload:TUserCreation): Promise<TUserResponse> {
+export async function createUserService({ password, email, details: payloadDetails }:TUserCreation): Promise<TUserResponse> {
 
     const detailsRepo = AppDataSource.getRepository(UserDetails);
     const userRepo = AppDataSource.getRepository(User);
     
-    const details = detailsRepo.create(payload.details);
+    const details = detailsRepo.create(payloadDetails);
     details.birthdate = dayjs(details.birthdate).format("YYYY-MM-DD HH:mm:ss");
     
-    const user = userRepo.create({
-        password: payload.password,
-        email: payload.email,
-        details: details
-    });
+    const user = userRepo.create({ password, email, details });
 
     await userRepo.save(user);
     user.password = undefined;
