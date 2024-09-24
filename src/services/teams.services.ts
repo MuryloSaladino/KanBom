@@ -46,7 +46,15 @@ export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
     return await repo.save({ ...team, ...payload });
 }
 
+export async function deleteTeamService(teamId:string) {
+    
+    const repo = AppDataSource.getRepository(Team);
 
+    const team = await repo.findOneBy({ id: teamId });
+    if(!team) throw new AppError("Team not found", 404);
+
+    await repo.softDelete(team);
+}
 
 export async function getUserTeamsService(userId:string) {
     
