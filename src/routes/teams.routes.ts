@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authenticate from "../middlewares/authenticate.middleware";
 import { createTeamController, deleteTeamController, getTeamController, getTeamsByUserController, updateTeamController } from "../controllers/teams.controllers";
-import { authorizeMember, authorizeTeamOwner } from "../middlewares/authorize.middleware";
+import { authorizeMember, authorizeTeamOwner } from "../middlewares/teams.middlewares";
 
 const teamRouter = Router();
 
