@@ -10,3 +10,10 @@ export const createUserSchema = z.object({
         profilePicture: z.string().max(255)
     })
 }).strict();
+
+export const updateUserSchema = z.object({
+    birthdate: z.date().optional(),
+    firstName: z.string().min(2).max(50).optional(),
+    lastName: z.string().min(2).max(255).optional(),
+    profilePicture: z.string().max(255).optional()
+})
