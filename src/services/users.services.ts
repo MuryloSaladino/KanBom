@@ -47,9 +47,9 @@ export async function updateUserDetailsService(id:string, payload:TUserUpdate): 
 export async function deleteUserService(id:string): Promise<void> {
     
     const repo = AppDataSource.getRepository(User);
-    
-    if(!await repo.exists({ where: { id } }))
-        throw new AppError("User not found", 404);
 
-    await repo.softDelete({ id });
+    const user = await repo.findOneBy({ id })
+    if(!user) throw new AppError("User not found", 404);
+
+    await repo.save({ ...user, deletedAt: new Date() });
 }
