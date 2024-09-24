@@ -16,4 +16,4 @@ export const updateUserSchema = z.object({
     firstName: z.string().min(2).max(50).optional(),
     lastName: z.string().min(2).max(255).optional(),
     profilePicture: z.string().max(255).optional()
-})
+}).strict();
