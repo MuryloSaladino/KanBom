@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
+import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import BaseEntity from "./BaseEntity.entity";
 import UserDetails from "./UserDetails.entity";
 import { hashSync } from "bcryptjs";
@@ -29,6 +29,7 @@ export default class User extends BaseEntity {
     notifications?: Member[];
 
     @BeforeInsert()
+    @BeforeUpdate()
     hashPassword() {
         this.password = hashSync(this.password!)
     }

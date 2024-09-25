@@ -5,7 +5,7 @@ import { TUserCreation, TUserResponse, TUserUpdate } from "../types/users.types"
 import dayjs from "dayjs";
 import AppError from "../errors";
 
-export async function createUserService({ password, email, details: payloadDetails }:TUserCreation): Promise<TUserResponse> {
+export async function createUserService({ password, email, ...payloadDetails }:TUserCreation): Promise<TUserResponse> {
 
     const detailsRepo = AppDataSource.getRepository(UserDetails);
     const userRepo = AppDataSource.getRepository(User);
@@ -32,14 +32,16 @@ export async function getUserService(id:string): Promise<TUserResponse> {
     return user.hideFields();
 }
 
-export async function updateUserDetailsService(id:string, payload:TUserUpdate): Promise<TUserResponse> {
+export async function updateUserDetailsService(id:string, { password, email, ...payloadDetails }:TUserUpdate): Promise<TUserResponse> {
     
     const repo = AppDataSource.getRepository(User);
 
     const user = await repo.findOne({ where: { id }, relations: { details: true } })
     if(!user) throw new AppError("User not found", 404);
 
-    user.details = { ...user.details, ...payload }
+    user.details = { ...user.details, ...payloadDetails }
+    if(email) user.email = email;
+    if(password) user.password = password;
 
     return await repo.save(user);
 }
