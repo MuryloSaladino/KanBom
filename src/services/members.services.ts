@@ -63,7 +63,7 @@ export async function getTeamMembersService(teamId:string) {
     const team = await repo.findOne({ where: { id: teamId }, relations: { members: true } });
     if(!team) throw new AppError("Team not found", 404);
 
-    return await AppDataSource
+    const query = await AppDataSource
         .getRepository(User)
         .createQueryBuilder("u")
         .leftJoinAndSelect("u.details", "ud")
@@ -71,6 +71,7 @@ export async function getTeamMembersService(teamId:string) {
         .innerJoin("teams", "t", "m.teamId = t.id")
         .where("t.id = :teamId", { teamId })
         .getMany();
+    return query.map(user => user.hideFields())
 }
 
 export async function removeMemberService(teamId:string, userId:string) {

@@ -12,7 +12,7 @@ export default class User extends BaseEntity {
     @Column({ type: "varchar", length: 50, unique: true })
     email?: string;
 
-    @Column({ type: "varchar", length: 255, select: false })
+    @Column({ type: "varchar", length: 255 })
     password?: string;
 
     @OneToOne(() => UserDetails, { nullable: false, cascade: true })
@@ -31,5 +31,9 @@ export default class User extends BaseEntity {
     @BeforeInsert()
     hashPassword() {
         this.password = hashSync(this.password!)
+    }
+
+    public hideFields(): User {
+        return { ...this, password: undefined }
     }
 }

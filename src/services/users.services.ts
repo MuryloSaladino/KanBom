@@ -29,7 +29,7 @@ export async function getUserService(id:string): Promise<TUserResponse> {
     })
 
     if(!user) throw new AppError("User not found", 404);
-    return user;
+    return user.hideFields();
 }
 
 export async function updateUserDetailsService(id:string, payload:TUserUpdate): Promise<TUserResponse> {
