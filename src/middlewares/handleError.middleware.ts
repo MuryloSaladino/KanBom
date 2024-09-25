@@ -3,15 +3,14 @@ import AppError from "../errors"
 import { ZodError } from "zod"
 
 export default function handleError(err:Error, _req:Request, res:Response, next:NextFunction) {
-
-    if(err instanceof AppError) {
-        return res.status(err.statusCode).json({ message: err.message })
+    switch (err.constructor) {
+        case AppError:
+            const appError = err as AppError;
+            return res.status(appError.statusCode).json({ message: err.message })
+        case ZodError:
+            const zodError = err as ZodError;
+            return res.status(400).json({ message: zodError.flatten().fieldErrors })
+        default:
+            return res.status(500).json({ message: "Internal Server Error" })
     }
-
-    if(err instanceof ZodError) {
-        return res.status(400).json({ message: err.flatten().fieldErrors })
-    }
-
-    console.log(err)
-    return res.status(500).json({ message: "Internal Server Error" })
 }
