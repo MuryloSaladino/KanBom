@@ -9,6 +9,8 @@ import loginRouter from "./routes/login.routes";
 import teamRouter from "./routes/teams.routes";
 import notificationsRouter from "./routes/notification.routes";
 import memberRouter from "./routes/members.routes";
+import { serve, setup } from "swagger-ui-express";
+import swaggerDocs from "../docs/routes/swagger.json"
 
 
 const app = express();
@@ -21,6 +23,10 @@ app.use("/api/login", loginRouter);
 app.use("/api/teams", teamRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/members", memberRouter);
+
+if(process.env.NODE_ENV == "dev") {
+    app.use("/docs", serve, setup(swaggerDocs))
+}
 
 app.use(handleError);
 
