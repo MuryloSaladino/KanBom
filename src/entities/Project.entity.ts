@@ -8,8 +8,8 @@ export default class Project extends BaseEntity {
     @Column({ type: "varchar", length: 50 })
     name?: string;
 
-    @Column({ type: "varchar", length: 255 })
-    thumbnail?: string;
+    @Column({ type: "varchar", length: 255, nullable: true })
+    thumbnail?: string | null;
 
     @OneToMany(() => Participant, (participant) => participant.project)
     participants?: Participant[];

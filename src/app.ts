@@ -11,6 +11,7 @@ import notificationsRouter from "./routes/notification.routes";
 import memberRouter from "./routes/members.routes";
 import { serve, setup } from "swagger-ui-express";
 import swaggerDocs from "../docs/routes/swagger.json"
+import projectRouter from "./routes/projects.routes";
 
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/api/login", loginRouter);
 app.use("/api/teams", teamRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/members", memberRouter);
+app.use("/api/projects", projectRouter);
 
 if(process.env.NODE_ENV == "dev") {
     app.use("/docs", serve, setup(swaggerDocs))
