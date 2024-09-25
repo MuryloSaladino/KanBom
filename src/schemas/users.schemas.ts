@@ -8,7 +8,7 @@ export const createUserSchema = z.object({
         firstName: z.string().min(2).max(50),
         lastName: z.string().min(2).max(255),
         profilePicture: z.string().max(255).nullable()
-    })
+    }).strict()
 }).strict();
 
 export const updateUserSchema = z.object({
