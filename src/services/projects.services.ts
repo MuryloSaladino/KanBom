@@ -25,3 +25,16 @@ export async function createProjectService(userId:string, payload:TProjectCreati
 
     return project;
 }
+
+export async function getProjectsByUserService(userId:string) {
+    const query = await AppDataSource.getRepository(Project)
+        .createQueryBuilder("p")
+        .innerJoin(User, "u")
+        .innerJoinAndSelect("participants", "pa")
+        .where("u.id = :userId", { userId })
+        .select("p.name")
+        .addSelect("p.thumbnail")
+        .addSelect("pa.role")
+        .getMany()
+    return query;
+}
