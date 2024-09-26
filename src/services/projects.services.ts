@@ -32,9 +32,9 @@ export async function getProjectsByUserService(userId:string) {
         .innerJoin(User, "u")
         .innerJoinAndSelect("participants", "pa")
         .where("u.id = :userId", { userId })
-        .select("p.name")
-        .addSelect("p.thumbnail")
-        .addSelect("pa.role")
-        .getMany()
+        .select("p.name", "name")
+        .addSelect("p.thumbnail", "thumbnail")
+        .addSelect("pa.role", "role")
+        .getRawMany()
     return query;
 }
