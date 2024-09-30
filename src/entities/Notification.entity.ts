@@ -8,7 +8,7 @@ export default class Notification extends BaseEntity {
     @Column({ type: "varchar", length: "MAX" })
     action?: string;
 
-    @Column({ type: "nvarchar", length: "MAX" })
+    @Column({ type: "varchar", length: "MAX" })
     content?: string;
 
     @ManyToOne(() => User, (user) => user.notifications)

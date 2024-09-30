@@ -35,6 +35,7 @@ export async function getProjectsByUserService(userId:string) {
         .select("p.name", "name")
         .addSelect("p.thumbnail", "thumbnail")
         .addSelect("pa.role", "role")
+        .addSelect("p.id", "projectId")
         .getRawMany()
     return query;
 }
