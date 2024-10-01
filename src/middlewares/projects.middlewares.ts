@@ -17,14 +17,14 @@ export async function authorizeParticipant(req:Request, res:Response, next:NextF
     next()
 }
 
-export async function authorizeParticipantByRole(role:Role) {
+export function authorizeParticipantByRole(role:Role) {
     return async (req:Request, res:Response, next:NextFunction) => {
 
         const found = await AppDataSource
             .getRepository(Participant)
             .createQueryBuilder("p")
             .where("p.userId = :userId", { userId: res.locals.userId })
-            .andWhere("p.projectId = :projectId", { teamId: req.params.projectId })
+            .andWhere("p.projectId = :projectId", { projectId: req.params.projectId })
             .getOne();
         if(!found) throw new AppError("You are not a part of that project", 403);
         

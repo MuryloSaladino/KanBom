@@ -4,7 +4,7 @@ import Project from "../entities/Project.entity";
 import User from "../entities/User.entity";
 import { Role } from "../enums/Role";
 import AppError from "../errors";
-import { TProjectCreation } from "../types/projects.types";
+import { TProjectCreation, TProjectUpdate } from "../types/projects.types";
 
 export async function createProjectService(userId:string, payload:TProjectCreation) {
     
@@ -38,4 +38,24 @@ export async function getProjectsByUserService(userId:string) {
         .addSelect("p.id", "projectId")
         .getRawMany()
     return query;
+}
+
+export async function updateProjectService(projectId:string, payload:TProjectUpdate) {
+    
+    const repo = AppDataSource.getRepository(Project);
+
+    const project = await repo.findOneBy({ id: projectId });
+    if(!project) throw new AppError("Project not found", 404);
+
+    return await repo.save({ ...project, ...payload })
+}
+
+export async function deleteProjectService(projectId:string) {
+    
+    const repo = AppDataSource.getRepository(Project);
+
+    const project = await repo.findOneBy({ id: projectId });
+    if(!project) throw new AppError("Project not found", 404);
+
+    await repo.softDelete({ id: project.id });
 }
