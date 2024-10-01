@@ -5,12 +5,14 @@ import User from "../entities/User.entity";
 import AppError from "../errors";
 import Notification from "../entities/Notification.entity";
 import Member from "../entities/Member.entity";
+import TeamInvite from "../entities/TeamInvite.entity";
 
 export async function inviteMemberService(email:string, teamId:string) {
     
     const notificationRepo = AppDataSource.getRepository(Notification);
     const userRepo = AppDataSource.getRepository(User);
     const teamRepo = AppDataSource.getRepository(Team);
+    const inviteRepo = AppDataSource.getRepository(TeamInvite)
 
     const user = await userRepo.findOneBy({ email });
     if(!user) throw new AppError("User not found", 404);
@@ -18,19 +20,8 @@ export async function inviteMemberService(email:string, teamId:string) {
     const team = await teamRepo.findOneBy({ id: teamId });
     if(!team) throw new AppError("Team not found", 404);
 
-    const token = sign(
-        { email, teamId },
-        String(process.env.SECRET_KEY),
-        {  }
-    )
-
-    const notification = notificationRepo.create({
-        action: `/api/members/invite/${token}`,
-        content: `You have been invited to work with ${team.name}!`,
-        user
-    })
-
-    await notificationRepo.save(notification);
+    await inviteRepo.save({ user, team })
+    await notificationRepo.save({ user, content: `You have been invited to work with ${team.name}!` })
 }
 
 export async function acceptTeamInvitationService(token:string) {

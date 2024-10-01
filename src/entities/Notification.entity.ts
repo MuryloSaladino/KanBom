@@ -6,9 +6,6 @@ import User from "./User.entity";
 export default class Notification extends BaseEntity {
 
     @Column({ type: "text" })
-    action?: string;
-
-    @Column({ type: "text" })
     content?: string;
 
     @ManyToOne(() => User, (user) => user.notifications)
