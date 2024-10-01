@@ -24,8 +24,6 @@ export const loginService = async ({ email, password }:ILoginPayload): Promise<I
         relations: { details: true }
     });
     if(!user) throw new AppError("User not found", 404);
-    console.log("\n", user);
-    
     if(!user.password) throw new AppError("Invalid user", 409);
 
     if(!compareSync(password, user.password))

@@ -37,8 +37,6 @@ export async function getTeamService(teamId:string) {
 }
 
 export async function getTeamsByUserService(userId:string) {
-    console.log(userId);
-    
     return await AppDataSource.getRepository(Team)
         .createQueryBuilder("t")
         .innerJoin(Member, "m", "t.id = m.teamId")

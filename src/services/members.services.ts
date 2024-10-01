@@ -76,9 +76,9 @@ export async function removeMemberService(teamId:string, userId:string) {
         throw new AppError("You can't leave the team before passing along the ownership");
 
     await AppDataSource.getRepository(Member)
-        .createQueryBuilder("t")
-        .where("m.teamId = :teamId", { teamId })
-        .andWhere("m.userId = :userId", { userId })
+        .createQueryBuilder()
+        .where("teamId = :teamId", { teamId })
+        .andWhere("userId = :userId", { userId })
         .delete()
         .execute();
 }

@@ -17,6 +17,6 @@ export async function acceptInviteController(req:Request, res:Response) {
 }
 
 export async function removeMemberController(req:Request, res:Response) {
-    await removeMemberService(req.params.userId, req.params.userId);
+    await removeMemberService(req.params.teamId, req.params.userId);
     return res.status(204).send();
 }
