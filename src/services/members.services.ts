@@ -42,7 +42,7 @@ export async function acceptTeamInvitationService(teamId:string, userId:string) 
         .createQueryBuilder()
         .insert()
         .into(Member)
-        .values([{ user: userId, team: teamId }])
+        .values([{ userId, teamId }])
         .orIgnore()
         .execute();
 }
