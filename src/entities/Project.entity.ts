@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from "typeorm";
-import BaseEntity from "./BaseEntity.entity";
+import BaseEntity from "./common/BaseEntity.entity";
 import Participant from "./Participant.entity";
 
 @Entity("projects")

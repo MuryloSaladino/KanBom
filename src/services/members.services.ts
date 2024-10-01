@@ -43,6 +43,7 @@ export async function acceptTeamInvitationService(teamId:string, userId:string) 
         .insert()
         .into(Member)
         .values([{ user: userId, team: teamId }])
+        .orIgnore()
         .execute();
 }
 

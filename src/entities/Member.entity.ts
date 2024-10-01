@@ -1,20 +1,22 @@
-import { Entity, ManyToOne, RelationId } from "typeorm";
-import BaseEntity from "./BaseEntity.entity";
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn, RelationId } from "typeorm";
 import User from "./User.entity";
 import Team from "./Team.entity";
+import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
 
 @Entity("members")
-export default class Member extends BaseEntity {
+export default class Member extends NoIdBaseEntity {
 
-    @ManyToOne(() => User, (user) => user.memberIn, { cascade: true })
-    user?: User;
-
-    @RelationId((member:Member) => member.user)
+    @PrimaryColumn()
     userId?: string;
 
-    @ManyToOne(() => Team, (team) => team.members, { cascade: true })
-    team?: Team;
-
-    @RelationId((member:Member) => member.team)
+    @PrimaryColumn()
     teamId?: string;
+
+    @ManyToOne(() => User, (user) => user.memberIn, { cascade: true })
+    @JoinColumn({ name: "userId" })
+    user?: User;
+
+    @ManyToOne(() => Team, (team) => team.members, { cascade: true })
+    @JoinColumn({ name: "teamId" })
+    team?: Team;
 }

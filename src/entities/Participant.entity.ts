@@ -1,11 +1,11 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, RelationId } from "typeorm";
-import BaseEntity from "./BaseEntity.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Role, roleToString, stringToRole } from "../enums/Role";
 import User from "./User.entity";
 import Project from "./Project.entity";
+import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
 
 @Entity("participants")
-export default class Participant extends BaseEntity {
+export default class Participant extends NoIdBaseEntity {
 
     @Column({ 
         type: "varchar",
@@ -14,15 +14,18 @@ export default class Participant extends BaseEntity {
     })
     role?: Role;
 
-    @ManyToOne(() => User, (user) => user.participations, { cascade: true })
-    user?: User;
-
-    @RelationId((participant:Participant) => participant.user)
+    @PrimaryColumn()
     userId?: string;
 
+    @PrimaryColumn()
+    projectId?: string;
+    
+    @ManyToOne(() => User, (user) => user.participations, { cascade: true })
+    @JoinColumn({ name: "userId" })
+    user?: User;
+
     @ManyToOne(() => Project, (project) => project.participants, { cascade: true })
+    @JoinColumn({ name: "projectId" })
     project?: Project;
 
-    @RelationId((participant:Participant) => participant.project)
-    projectId?: string;
 }
