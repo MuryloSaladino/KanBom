@@ -8,9 +8,11 @@ import { Role } from "../enums/Role";
 
 const projectRouter = Router();
 
-projectRouter.post("", authenticate, validateBody(createProjectSchema), createProjectController);
-projectRouter.get("/users/:userId", authenticate, getProjectsByUserController);
-projectRouter.patch("/:projectId", authenticate, authorizeParticipantByRole(Role.EDITOR), updateProjectController)
-projectRouter.delete("/:projectId", authenticate, authorizeParticipantByRole(Role.OWNER), deleteProjectController)
+projectRouter.use(authenticate)
+
+projectRouter.post("", validateBody(createProjectSchema), createProjectController);
+projectRouter.get("/users/:userId", getProjectsByUserController);
+projectRouter.patch("/:projectId", authorizeParticipantByRole(Role.EDITOR), updateProjectController)
+projectRouter.delete("/:projectId", authorizeParticipantByRole(Role.OWNER), deleteProjectController)
 
 export default projectRouter;
