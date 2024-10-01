@@ -12,7 +12,7 @@ export async function inviteToTeamController(req:Request, res:Response) {
 }
 
 export async function acceptInviteController(req:Request, res:Response) {
-    await acceptTeamInvitationService(req.params.token);
+    await acceptTeamInvitationService(req.params.teamId, res.locals.userId);
     return res.status(204).send();
 }
 

@@ -9,7 +9,7 @@ const memberRouter = Router();
 
 memberRouter.get("/teams/:teamId", authenticate, getTeamMembersController);
 memberRouter.post("/teams/:teamId/users/:userId", authenticate, authorizeTeamOwner, inviteToTeamController);
-memberRouter.post("/invite/:token", authenticate, acceptInviteController);
+memberRouter.post("/invite/:teamId", authenticate, acceptInviteController);
 memberRouter.patch("/:teamId/users/:userId", authenticate, passOne(authorizeTeamOwner, authorizeOwnUser), removeMemberController);
 
 export default memberRouter;

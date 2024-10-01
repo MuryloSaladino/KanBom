@@ -1,4 +1,3 @@
-import { sign, verify } from "jsonwebtoken";
 import AppDataSource from "../data-source";
 import Team from "../entities/Team.entity";
 import User from "../entities/User.entity";
@@ -21,30 +20,30 @@ export async function inviteMemberService(email:string, teamId:string) {
     if(!team) throw new AppError("Team not found", 404);
 
     await inviteRepo.save({ user, team })
-    await notificationRepo.save({ user, content: `You have been invited to work with ${team.name}!` })
+    await notificationRepo.save({ user, content: JSON.stringify({
+        message: `You have been invited to work with ${team.name}!`,
+        actions: [{ title: "accept", url: `/members/invite/${team.id}` }]
+    })})
 }
 
-export async function acceptTeamInvitationService(token:string) {
-    verify(
-        token,
-        String(process.env.SECRET_KEY),
-        async (err:any, decoded:any) => {
-            if(err) throw new AppError(err.message, 401);
-            
-            const { teamId, email } = decoded;
-            if(!teamId || !email) throw new AppError("Invalid jwt", 401);
+export async function acceptTeamInvitationService(teamId:string, userId:string) {
 
-            const userRepo = AppDataSource.getRepository(User);
-            const teamRepo = AppDataSource.getRepository(Team);
+    const query = await AppDataSource
+        .createQueryBuilder()
+        .delete()
+        .from(TeamInvite)
+        .where("userId = :userId", { userId })    
+        .andWhere("teamId = :teamId", { teamId })
+        .execute()
+    if(query.affected && query.affected == 0) 
+        throw new AppError("You don't have an invite to enter that team")
 
-            const user = await userRepo.findOneBy({ email });
-            const team = await teamRepo.findOneBy({ id: teamId });
-            if(!user || !team) throw new AppError("That invitation is not valid anymore.");
-
-            const memberRepo = AppDataSource.getRepository(Member);
-            await memberRepo.save({ team, user });
-        }
-    )
+    await AppDataSource
+        .createQueryBuilder()
+        .insert()
+        .into(Member)
+        .values([{ user: userId, team: teamId }])
+        .execute();
 }
 
 export async function getTeamMembersService(teamId:string) {
