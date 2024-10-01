@@ -7,9 +7,11 @@ import { authorizeOwnUser } from "../middlewares/users.middlewares";
 
 const memberRouter = Router();
 
-memberRouter.get("/teams/:teamId", authenticate, getTeamMembersController);
-memberRouter.post("/invite/:teamId", authenticate, acceptInviteController);
-memberRouter.post("/teams/:teamId/users/:userId", authenticate, authorizeTeamOwner, inviteToTeamController);
-memberRouter.delete("/teams/:teamId/users/:userId", authenticate, passOne(authorizeTeamOwner, authorizeOwnUser), removeMemberController);
+memberRouter.use(authenticate)
+
+memberRouter.get("/teams/:teamId", getTeamMembersController);
+memberRouter.post("/invite/:teamId", acceptInviteController);
+memberRouter.post("/teams/:teamId/users/:userId", authorizeTeamOwner, inviteToTeamController);
+memberRouter.delete("/teams/:teamId/users/:userId", passOne(authorizeTeamOwner, authorizeOwnUser), removeMemberController);
 
 export default memberRouter;

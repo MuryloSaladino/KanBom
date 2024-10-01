@@ -4,7 +4,9 @@ import { deleteNotificationController, getNotificationsController } from "../con
 
 const notificationsRouter = Router();
 
-notificationsRouter.get("", authenticate, getNotificationsController);
-notificationsRouter.delete("/:notificationId", authenticate, deleteNotificationController);
+notificationsRouter.use(authenticate)
+
+notificationsRouter.get("", getNotificationsController);
+notificationsRouter.delete("/:notificationId", deleteNotificationController);
 
 export default notificationsRouter;

@@ -7,10 +7,12 @@ import { createTeamSchema, updateTeamSchema } from "../schemas/teams.schemas";
 
 const teamRouter = Router();
 
-teamRouter.post("", authenticate, validateBody(createTeamSchema), createTeamController);
-teamRouter.get("/:teamId", authenticate, authorizeMember, getTeamController);
-teamRouter.get("/users/:userId", authenticate, getTeamsByUserController);
-teamRouter.patch("/:teamId", authenticate, authorizeTeamOwner, validateBody(updateTeamSchema), updateTeamController);
-teamRouter.delete("/:teamId", authenticate, authorizeTeamOwner, deleteTeamController);
+teamRouter.use(authenticate)
+
+teamRouter.post("", validateBody(createTeamSchema), createTeamController);
+teamRouter.get("/:teamId", authorizeMember, getTeamController);
+teamRouter.get("/users/:userId", getTeamsByUserController);
+teamRouter.patch("/:teamId", authorizeTeamOwner, validateBody(updateTeamSchema), updateTeamController);
+teamRouter.delete("/:teamId", authorizeTeamOwner, deleteTeamController);
 
 export default teamRouter;
