@@ -5,10 +5,10 @@ import User from "./User.entity";
 @Entity("notifications")
 export default class Notification extends BaseEntity {
 
-    @Column({ type: "varchar", length: "MAX" })
+    @Column({ type: "text" })
     action?: string;
 
-    @Column({ type: "varchar", length: "MAX" })
+    @Column({ type: "text" })
     content?: string;
 
     @ManyToOne(() => User, (user) => user.notifications)
