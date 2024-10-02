@@ -7,7 +7,7 @@ export async function getTeamMembersController(req:Request, res:Response) {
 }
 
 export async function inviteToTeamController(req:Request, res:Response) {
-    await inviteMemberService(req.params.userId, req.params.teamId);
+    await inviteMemberService(req.params.email, req.params.teamId);
     return res.status(204).send();
 }
 
