@@ -4,9 +4,9 @@ import Participant from "../entities/Participant.entity";
 import Project from "../entities/Project.entity";
 import ProjectInvite from "../entities/ProjectInvite.entity";
 import User from "../entities/User.entity";
-import { stringToRole } from "../enums/Role";
+import { Role, stringToRole } from "../enums/Role";
 import AppError from "../errors";
-import { TInviteToProject } from "../types/projects.types";
+import { TInviteToProject, TParticipantUpdate } from "../types/projects.types";
 
 export async function inviteToProjectService(projectId:string, email:string, { role }:TInviteToProject) {
     
@@ -46,8 +46,6 @@ export async function acceptProjectInvitationService(projectId:string, userId:st
 }
 
 export async function getProjectParticipantsService(projectId:string) {
-    console.log("p: ", projectId);
-    
     return await AppDataSource
         .getRepository(Participant)
         .createQueryBuilder("pa")
@@ -58,5 +56,43 @@ export async function getProjectParticipantsService(projectId:string) {
         .select("pa.role", "role")
         .addSelect("u.email", "email")
         .addSelect("ud.profilePicture", "profilePicture")
+        .addSelect("u.id", "userId")
+        .addSelect("ud.firstName", "firstName")
+        .addSelect("ud.lastName", "lastName")
         .getRawMany()
+}
+
+export async function updateParticipantService(projectId:string, userId:string, payload:TParticipantUpdate) {
+    const repo = AppDataSource.getRepository(Participant)
+    
+    const participant = await repo
+        .createQueryBuilder("p")
+        .where("p.userId = :userId", { userId })
+        .where("p.projectId = :projectId", { projectId })
+        .getOne();
+    if(!participant) throw new AppError("Participant not found", 404);
+
+    const role:Role = payload.role ? stringToRole(payload.role) : participant.role!;
+    return await repo.save({ ...participant, role })
+}
+
+export async function removeParticipantService(projectId:string, userId:string) {
+    const repo = AppDataSource.getRepository(Participant)
+    
+    const participant = await repo
+        .createQueryBuilder("p")
+        .where("p.userId = :userId", { userId })
+        .where("p.projectId = :projectId", { projectId })
+        .getOne();
+    if(!participant) throw new AppError("Participant not found", 404);
+    
+    if(participant.role == Role.OWNER) {
+        const ownerCount = await repo
+            .createQueryBuilder("p")
+            .where("p.role = :role", { role: "Owner" })
+            .andWhere("p.projectId", { projectId })
+            .getCount()
+        if(ownerCount == 1) throw new AppError("You must pass along the ownership before leaving the team")
+    }
+    await repo.softDelete(participant)
 }

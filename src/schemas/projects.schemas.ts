@@ -13,3 +13,7 @@ export const updateProjectSchema = z.object({
 export const inviteToProjectSchema = z.object({
     role: z.enum(["Owner", "Editor", "Reader"])
 }).strict()
+
+export const participantUpdateSchema = z.object({
+    role: z.enum(["Owner", "Editor", "Reader"]).optional()
+}).strict()
