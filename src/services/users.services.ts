@@ -1,11 +1,11 @@
 import AppDataSource from "../data-source";
 import User from "../entities/User.entity";
 import UserDetails from "../entities/UserDetails.entity";
-import { TUserCreation, TUserResponse, TUserUpdate } from "../types/users.types";
+import { TUserCreation, TUserUpdate } from "../types/users.types";
 import dayjs from "dayjs";
 import AppError from "../errors";
 
-export async function createUserService({ password, email, ...payloadDetails }:TUserCreation): Promise<TUserResponse> {
+export async function createUserService({ password, email, ...payloadDetails }:TUserCreation) {
 
     const detailsRepo = AppDataSource.getRepository(UserDetails);
     const userRepo = AppDataSource.getRepository(User);
@@ -20,7 +20,7 @@ export async function createUserService({ password, email, ...payloadDetails }:T
     return user;
 }
 
-export async function getUserService(id:string): Promise<TUserResponse> {
+export async function getUserService(id:string) {
     
     const repo = AppDataSource.getRepository(User);
     const user = await repo.findOne({ 
@@ -32,7 +32,7 @@ export async function getUserService(id:string): Promise<TUserResponse> {
     return user.hideFields();
 }
 
-export async function updateUserDetailsService(id:string, { password, email, ...payloadDetails }:TUserUpdate): Promise<TUserResponse> {
+export async function updateUserDetailsService(id:string, { password, email, ...payloadDetails }:TUserUpdate) {
     
     const repo = AppDataSource.getRepository(User);
 

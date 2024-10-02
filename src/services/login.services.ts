@@ -2,19 +2,14 @@ import { compareSync } from "bcryptjs";
 import AppDataSource from "../data-source";
 import User from "../entities/User.entity";
 import AppError from "../errors";
-import { TUserResponse } from "../types/users.types";
 import { sign } from "jsonwebtoken";
 
 interface ILoginPayload {
     email: string;
     password: string;
 }
-interface ILoginResponse {
-    token: string;
-    user: TUserResponse;
-}
 
-export const loginService = async ({ email, password }:ILoginPayload): Promise<ILoginResponse> => {
+export const loginService = async ({ email, password }:ILoginPayload) => {
 
     const repo = AppDataSource.getRepository(User);
 

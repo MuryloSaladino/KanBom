@@ -1,5 +1,6 @@
-import Team from "../entities/Team.entity";
+import { z } from "zod";
+import { createTeamSchema, updateTeamSchema } from "../schemas/teams.schemas";
 
-export type TTeamCreation = Pick<Team, "name">;
+export type TTeamCreation = z.infer<typeof createTeamSchema>;
 
-export type TTeamUpdate = Partial<TTeamCreation>;
+export type TTeamUpdate = z.infer<typeof updateTeamSchema>;
