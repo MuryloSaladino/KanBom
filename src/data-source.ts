@@ -31,7 +31,7 @@ const buildSettings = (): DataSourceOptions => {
         username,
         password,
         database,
-        logging: true,
+        logging: nodeEnv == "dev",
         entities: [entitiesPath],
         migrations: [migrationPath],
         options: {
