@@ -10,7 +10,7 @@ export async function authorizeParticipant(req:Request, res:Response, next:NextF
         .getRepository(Participant)
         .createQueryBuilder("p")
         .where("p.userId = :userId", { userId: res.locals.userId })
-        .andWhere("p.projectId = :projectId", { teamId: req.params.projectId })
+        .andWhere("p.projectId = :projectId", { projectId: req.params.projectId })
         .getExists();
     if(!found) throw new AppError("You do not have authorization for that", 403)
 

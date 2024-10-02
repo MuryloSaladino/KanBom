@@ -34,13 +34,29 @@ export async function acceptProjectInvitationService(projectId:string, userId:st
     const participantRepo = AppDataSource.getRepository(Participant);
 
     const invite = await inviteRepo
-        .createQueryBuilder()
-        .where("userId = :userId", { userId })
-        .andWhere("projectId = :projectId", { projectId })
+        .createQueryBuilder("i")
+        .where("i.userId = :userId", { userId })
+        .andWhere("i.projectId = :projectId", { projectId })
         .getOne()
     if(!invite) 
         throw new AppError("You don't have an invite to enter that project")
 
     await participantRepo.save(invite)
     await inviteRepo.delete({ ...invite })
+}
+
+export async function getProjectParticipantsService(projectId:string) {
+    console.log("p: ", projectId);
+    
+    return await AppDataSource
+        .getRepository(Participant)
+        .createQueryBuilder("pa")
+        .innerJoinAndSelect("projects", "p", "pa.projectId = p.id")
+        .innerJoinAndSelect("users", "u", "pa.userId = u.id")
+        .innerJoinAndSelect("user_details", "ud", "ud.id = u.detailsId")
+        .where("p.id = :projectId", { projectId })
+        .select("pa.role", "role")
+        .addSelect("u.email", "email")
+        .addSelect("ud.profilePicture", "profilePicture")
+        .getRawMany()
 }
