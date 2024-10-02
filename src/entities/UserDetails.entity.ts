@@ -4,7 +4,7 @@ import BaseEntity from "./common/BaseEntity.entity";
 @Entity("user_details")
 export default class UserDetails extends BaseEntity {
 
-    @Column({ type: "datetime" })
+    @Column({ type: "date" })
     birthdate?: string;
 
     @Column({ type: "varchar", length: 50 })
