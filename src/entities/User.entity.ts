@@ -12,7 +12,7 @@ export default class User extends BaseEntity {
     @Column({ type: "varchar", length: 50, unique: true })
     email?: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, select: false })
     password?: string;
 
     @OneToOne(() => UserDetails, { nullable: false, cascade: true })

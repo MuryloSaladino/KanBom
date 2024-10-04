@@ -14,14 +14,12 @@ export const loginService = async ({ email, password }:ILoginPayload) => {
     const repo = AppDataSource.getRepository(User);
 
     const user = await repo.findOne({
-        select: {  },
         where: { email },
-        relations: { details: true }
+        select: { id: true, email: true, password: true },
     });
     if(!user) throw new AppError("User not found", 404);
-    if(!user.password) throw new AppError("Invalid user", 409);
 
-    if(!compareSync(password, user.password))
+    if(!compareSync(password, user.password!))
         throw new AppError("Password does not match", 401)
 
     const token = sign( {},
@@ -31,5 +29,9 @@ export const loginService = async ({ email, password }:ILoginPayload) => {
             subject: user.id
         }
     )
-    return { token, user: { ...user, password: undefined } }
+    const fullUser = await repo.findOne({  
+        where: { id: user.id },
+        relations: { details: true }
+    })
+    return { token, user: fullUser }
 }
