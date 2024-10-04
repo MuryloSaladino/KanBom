@@ -19,11 +19,11 @@ export default class ProjectInvite {
     @PrimaryColumn()
     projectId?: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { onDelete: "CASCADE" })
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Project)
+    @ManyToOne(() => Project, { onDelete: "CASCADE" })
     @JoinColumn({ name: "projectId" })
     project?: Project;
 }

@@ -12,11 +12,11 @@ export default class Member extends NoIdBaseEntity {
     @PrimaryColumn()
     teamId?: string;
 
-    @ManyToOne(() => User, (user) => user.memberIn, { cascade: true })
+    @ManyToOne(() => User, (user) => user.memberIn, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Team, (team) => team.members, { cascade: true })
+    @ManyToOne(() => Team, (team) => team.members, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({ name: "teamId" })
     team?: Team;
 }

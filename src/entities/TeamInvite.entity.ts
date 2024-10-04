@@ -11,11 +11,11 @@ export default class TeamInvite {
     @PrimaryColumn()
     teamId?: string;
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { onDelete: "CASCADE" })
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Team)
+    @ManyToOne(() => Team, { onDelete: "CASCADE" })
     @JoinColumn({ name: "teamId" })
     team?: Team;
 }

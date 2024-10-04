@@ -12,7 +12,7 @@ export default class Team extends BaseEntity {
     @Column()
     ownerId?: string;
 
-    @ManyToOne(() => User, { onDelete: "SET NULL", nullable: true })
+    @ManyToOne(() => User, { onDelete: "CASCADE", nullable: true })
     @JoinColumn({ name: "ownerId" })
     owner?: User;
 

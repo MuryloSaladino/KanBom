@@ -15,7 +15,7 @@ export default class User extends BaseEntity {
     @Column({ type: "varchar", length: 255, select: false })
     password?: string;
 
-    @OneToOne(() => UserDetails, { nullable: false, cascade: true })
+    @OneToOne(() => UserDetails, { nullable: false, cascade: true, onDelete: "CASCADE" })
     @JoinColumn()
     details?: UserDetails;
 

@@ -20,11 +20,11 @@ export default class Participant extends NoIdBaseEntity {
     @PrimaryColumn()
     projectId?: string;
     
-    @ManyToOne(() => User, (user) => user.participations, { cascade: true })
+    @ManyToOne(() => User, (user) => user.participations, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Project, (project) => project.participants, { cascade: true })
+    @ManyToOne(() => Project, (project) => project.participants, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({ name: "projectId" })
     project?: Project;
 
