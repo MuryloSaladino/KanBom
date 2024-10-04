@@ -5,14 +5,12 @@ import AppError from "../errors";
 import Team from "../entities/Team.entity";
 
 export async function authorizeMember(req:Request, res:Response, next:NextFunction) {
-
-    const found = await AppDataSource
-        .getRepository(Member)
-        .createQueryBuilder("m")
-        .where("m.userId = :userId", { userId: res.locals.userId })
-        .andWhere("m.teamId = :teamId", { teamId: req.params.teamId })
-        .getExists();
-    if(!found) throw new AppError("You do not have authorization for that", 403)
+    
+    const found = await AppDataSource.getRepository(Member).existsBy({
+        userId: res.locals.userId,
+        teamId: req.params.teamId
+    });
+    if(!found) throw new AppError("You do not have authorization for that", 403);
     
     next()
 }
