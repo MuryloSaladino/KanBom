@@ -10,5 +10,5 @@ export async function getNotificationsService(userId:string) {
 export async function deleteNotificationService(userId:string, notificationId:string) {
     await AppDataSource
         .getRepository(Notification)
-        .remove({ userId, id: notificationId })
+        .softRemove({ userId, id: notificationId })
 }
