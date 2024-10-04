@@ -3,7 +3,7 @@ import User from "./User.entity";
 import Project from "./Project.entity";
 import { Role, roleToString, stringToRole } from "../enums/Role";
 
-@Entity("project_invite")
+@Entity("project_invites")
 export default class ProjectInvite {
 
     @Column({ 

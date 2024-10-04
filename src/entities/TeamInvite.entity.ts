@@ -2,7 +2,7 @@ import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 import Team from "./Team.entity";
 
-@Entity("team_invite")
+@Entity("team_invites")
 export default class TeamInvite {
    
     @PrimaryColumn()
