@@ -17,9 +17,9 @@ export async function authorizeMember(req:Request, res:Response, next:NextFuncti
 
 export async function authorizeTeamOwner(req:Request, res:Response, next:NextFunction) {
     
-    const repo = AppDataSource.getRepository(Team);
-
-    const team = await repo.findOneBy({ id: req.params.teamId });
+    const team = await AppDataSource
+        .getRepository(Team)
+        .findOneBy({ id: req.params.teamId });
     if(!team) throw new AppError("Team not found", 404);
 
     if(team.ownerId != res.locals.userId) 
