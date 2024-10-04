@@ -6,12 +6,10 @@ import { TParticipantRole } from "../types/projects.types";
 
 export async function authorizeParticipant(req:Request, res:Response, next:NextFunction) {
     
-    const found = await AppDataSource
-        .getRepository(Participant)
-        .createQueryBuilder("p")
-        .where("p.userId = :userId", { userId: res.locals.userId })
-        .andWhere("p.projectId = :projectId", { projectId: req.params.projectId })
-        .getExists();
+    const found = await AppDataSource.getRepository(Participant).existsBy({
+        userId: res.locals.userId,  
+        projectId: req.params.projectId,
+    })
     if(!found) throw new AppError("You do not have authorization for that", 403)
 
     next()
@@ -20,12 +18,10 @@ export async function authorizeParticipant(req:Request, res:Response, next:NextF
 export function authorizeParticipantByRole(roles:TParticipantRole[]) {
     return async (req:Request, res:Response, next:NextFunction) => {
 
-        const found = await AppDataSource
-            .getRepository(Participant)
-            .createQueryBuilder("p")
-            .where("p.userId = :userId", { userId: res.locals.userId })
-            .andWhere("p.projectId = :projectId", { projectId: req.params.projectId })
-            .getOne();
+        const found = await AppDataSource.getRepository(Participant).findOneBy({
+            userId: res.locals.userId,  
+            projectId: req.params.projectId,
+        });
         if(!found) throw new AppError("You are not a part of that project", 403);
         
         if(!roles.includes(found.role!))
