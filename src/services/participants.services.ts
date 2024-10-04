@@ -70,5 +70,5 @@ export async function removeParticipantService(projectId:string, userId:string) 
         if(ownerCount == 1)
             throw new AppError("You must pass along the ownership before leaving the team");
     }
-    await repo.softDelete(participant)
+    await repo.softRemove(participant)
 }
