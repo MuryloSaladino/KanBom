@@ -31,5 +31,5 @@ export const loginService = async ({ email, password }:ILoginPayload) => {
             subject: user.id
         }
     )
-    return { token, user: user.hideFields() }
+    return { token, user: { ...user, password: undefined } }
 }

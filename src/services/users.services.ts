@@ -29,7 +29,7 @@ export async function getUserService(id:string) {
     })
 
     if(!user) throw new AppError("User not found", 404);
-    return user.hideFields();
+    return { ...user, password: undefined };
 }
 
 export async function updateUserDetailsService(id:string, { password, email, ...payloadDetails }:TUserUpdate) {

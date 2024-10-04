@@ -33,8 +33,4 @@ export default class User extends BaseEntity {
     hashPassword() {
         this.password = hashSync(this.password!)
     }
-
-    public hideFields(): User {
-        return { ...this, password: undefined }
-    }
 }
