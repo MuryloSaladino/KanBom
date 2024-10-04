@@ -6,4 +6,8 @@ export default class AppError extends Error {
         super(message);
         this.statusCode = statusCode;
     }
+
+    static throw(message:string, statusCode:number = 400) {
+        throw new AppError(message, statusCode);
+    }
 }
