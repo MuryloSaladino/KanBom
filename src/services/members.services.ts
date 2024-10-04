@@ -56,5 +56,5 @@ export async function removeMemberService(teamId:string, userId:string) {
 
     await AppDataSource
         .getRepository(Member)
-        .delete({ teamId, userId });
+        .softRemove({ teamId, userId });
 }
