@@ -1,8 +1,6 @@
 import AppDataSource from "../data-source";
 import Participant from "../entities/Participant.entity";
 import Project from "../entities/Project.entity";
-import User from "../entities/User.entity";
-import { Role } from "../enums/Role";
 import AppError from "../errors";
 import { TProjectCreation, TProjectUpdate } from "../types/projects.types";
 
@@ -15,7 +13,7 @@ export async function createProjectService(userId:string, payload:TProjectCreati
     const project = await projectRepo.save(projectCreation);
     
     const creator = participantRepo.create({
-        role: Role.OWNER,
+        role: "Owner",
         project, 
         userId, 
     });

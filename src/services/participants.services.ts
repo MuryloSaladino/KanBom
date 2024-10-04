@@ -4,11 +4,10 @@ import Participant from "../entities/Participant.entity";
 import Project from "../entities/Project.entity";
 import ProjectInvite from "../entities/ProjectInvite.entity";
 import User from "../entities/User.entity";
-import { Role, stringToRole } from "../enums/Role";
 import AppError from "../errors";
 import { TInviteToProject, TParticipantUpdate } from "../types/projects.types";
 
-export async function inviteParticipantService(projectId:string, email:string, { role }:TInviteToProject) {
+export async function inviteParticipantService(projectId:string, email:string, payload:TInviteToProject) {
     const userRepo = AppDataSource.getRepository(User);
     const projectRepo = AppDataSource.getRepository(Project);
     const inviteRepo = AppDataSource.getRepository(ProjectInvite)
@@ -19,7 +18,7 @@ export async function inviteParticipantService(projectId:string, email:string, {
     const project = await projectRepo.findOneBy({ id: projectId });
     if(!project) throw new AppError("Team not found", 404);
 
-    await inviteRepo.save({ user, project, role: stringToRole(role) })
+    await inviteRepo.save({ user, project, ...payload })
     await AppDataSource
         .getRepository(Notification)
         .save({ user, content: JSON.stringify({
@@ -53,10 +52,7 @@ export async function updateParticipantService(projectId:string, userId:string, 
     const participant = await repo.findOneBy({ userId, projectId });
     if(!participant) throw new AppError("Participant not found", 404);
 
-    if(payload.role) {
-        participant.role = stringToRole(payload.role)
-    }
-    return await repo.save(participant)
+    return await repo.save({ ...participant, ...payload })
 }
 
 export async function removeParticipantService(projectId:string, userId:string) {
@@ -65,8 +61,8 @@ export async function removeParticipantService(projectId:string, userId:string) 
     const participant = await repo.findOneBy({ userId, projectId });
     if(!participant) throw new AppError("Participant not found", 404);
     
-    if(participant.role == Role.OWNER) {
-        const ownerCount = await repo.countBy({ projectId, role: Role.OWNER })
+    if(participant.role == "Owner") {
+        const ownerCount = await repo.countBy({ projectId, role: "Owner" })
         if(ownerCount == 1)
             throw new AppError("You must pass along the ownership before leaving the team");
     }

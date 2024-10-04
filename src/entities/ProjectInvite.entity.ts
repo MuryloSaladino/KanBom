@@ -1,17 +1,13 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 import Project from "./Project.entity";
-import { Role, roleToString, stringToRole } from "../enums/Role";
+import { TParticipantRole } from "../types/projects.types";
 
 @Entity("project_invites")
 export default class ProjectInvite {
 
-    @Column({ 
-        type: "varchar",
-        length: 20,
-        transformer: { to: roleToString, from: stringToRole }
-    })
-    role?: Role;
+    @Column({ type: "varchar", length: 20 })
+    role?: TParticipantRole;
 
     @PrimaryColumn()
     userId?: string;

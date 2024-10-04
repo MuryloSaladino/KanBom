@@ -1,18 +1,14 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import { Role, roleToString, stringToRole } from "../enums/Role";
 import User from "./User.entity";
 import Project from "./Project.entity";
 import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
+import { TParticipantRole } from "../types/projects.types";
 
 @Entity("participants")
 export default class Participant extends NoIdBaseEntity {
 
-    @Column({ 
-        type: "varchar",
-        length: 20,
-        transformer: { to: roleToString, from: stringToRole }
-    })
-    role?: Role;
+    @Column({ type: "varchar", length: 20 })
+    role?: TParticipantRole;
 
     @PrimaryColumn()
     userId?: string;
