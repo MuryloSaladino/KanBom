@@ -1,28 +1,27 @@
-import { Column, Entity, JoinTable, ManyToMany, ManyToOne, RelationId } from "typeorm";
-import BaseEntity from "./BaseEntity.entity";
-import { Role, roleToString, stringToRole } from "../enums/Role";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 import Project from "./Project.entity";
+import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
+import { TParticipantRole } from "../types/projects.types";
 
 @Entity("participants")
-export default class Participant extends BaseEntity {
+export default class Participant extends NoIdBaseEntity {
 
-    @Column({ 
-        type: "varchar",
-        length: 20,
-        transformer: { to: roleToString, from: stringToRole }
-    })
-    role?: Role;
+    @Column({ type: "varchar", length: 20 })
+    role?: TParticipantRole;
 
-    @ManyToOne(() => User, (user) => user.participations, { cascade: true })
-    user?: User;
-
-    @RelationId((participant:Participant) => participant.user)
+    @PrimaryColumn()
     userId?: string;
 
-    @ManyToOne(() => Project, (project) => project.participants, { cascade: true })
+    @PrimaryColumn()
+    projectId?: string;
+    
+    @ManyToOne(() => User, (user) => user.participations, { cascade: true, onDelete: "CASCADE" })
+    @JoinColumn({ name: "userId" })
+    user?: User;
+
+    @ManyToOne(() => Project, (project) => project.participants, { cascade: true, onDelete: "CASCADE" })
+    @JoinColumn({ name: "projectId" })
     project?: Project;
 
-    @RelationId((participant:Participant) => participant.project)
-    projectId?: string;
 }

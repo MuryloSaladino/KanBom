@@ -1,14 +1,21 @@
-import { Entity, ManyToOne } from "typeorm";
-import BaseEntity from "./BaseEntity.entity";
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 import Team from "./Team.entity";
 
-@Entity("team_invite")
-export default class TeamInvite extends BaseEntity {
+@Entity("team_invites")
+export default class TeamInvite {
+   
+    @PrimaryColumn()
+    userId?: string;
 
-    @ManyToOne(() => User)
+    @PrimaryColumn()
+    teamId?: string;
+
+    @ManyToOne(() => User, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Team)
+    @ManyToOne(() => Team, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "teamId" })
     team?: Team;
 }

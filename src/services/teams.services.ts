@@ -37,14 +37,9 @@ export async function getTeamService(teamId:string) {
 }
 
 export async function getTeamsByUserService(userId:string) {
-    console.log(userId);
-    
-    return await AppDataSource.getRepository(Team)
-        .createQueryBuilder("t")
-        .innerJoin(Member, "m", "t.id = m.teamId")
-        .innerJoin(User, "u", "u.id = m.userId")
-        .where("u.id = :userId", { userId })
-        .getMany()
+    return await AppDataSource.getRepository(Team).find({
+        where: { members: { userId } }
+    })
 }
 
 export async function updateTeamService(teamId:string, payload:TTeamUpdate) {

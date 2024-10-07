@@ -1,5 +1,5 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
-import BaseEntity from "./BaseEntity.entity";
+import BaseEntity from "./common/BaseEntity.entity";
 import UserDetails from "./UserDetails.entity";
 import { hashSync } from "bcryptjs";
 import Participant from "./Participant.entity";
@@ -12,10 +12,10 @@ export default class User extends BaseEntity {
     @Column({ type: "varchar", length: 50, unique: true })
     email?: string;
 
-    @Column({ type: "varchar", length: 255 })
+    @Column({ type: "varchar", length: 255, select: false })
     password?: string;
 
-    @OneToOne(() => UserDetails, { nullable: false, cascade: true })
+    @OneToOne(() => UserDetails, { nullable: false, cascade: true, onDelete: "CASCADE" })
     @JoinColumn()
     details?: UserDetails;
 
@@ -32,9 +32,5 @@ export default class User extends BaseEntity {
     @BeforeUpdate()
     hashPassword() {
         this.password = hashSync(this.password!)
-    }
-
-    public hideFields(): User {
-        return { ...this, password: undefined }
     }
 }

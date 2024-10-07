@@ -4,13 +4,24 @@ import { createTeamController, deleteTeamController, getTeamController, getTeams
 import { authorizeMember, authorizeTeamOwner } from "../middlewares/teams.middlewares";
 import validateBody from "../middlewares/validateBody.middleware";
 import { createTeamSchema, updateTeamSchema } from "../schemas/teams.schemas";
+import { acceptInviteController, getTeamMembersController, inviteToTeamController, removeMemberController } from "../controllers/members.controllers";
+import { passOne } from "../middlewares/utility.middlewares";
+import { authorizeOwnUser } from "../middlewares/users.middlewares";
 
 const teamRouter = Router();
 
-teamRouter.post("", authenticate, validateBody(createTeamSchema), createTeamController);
-teamRouter.get("/:teamId", authenticate, authorizeMember, getTeamController);
-teamRouter.get("/users/:userId", authenticate, getTeamsByUserController);
-teamRouter.patch("/:teamId", authenticate, authorizeTeamOwner, validateBody(updateTeamSchema), updateTeamController);
-teamRouter.delete("/:teamId", authenticate, authorizeTeamOwner, deleteTeamController);
+teamRouter.use(authenticate)
+
+teamRouter.post("", validateBody(createTeamSchema), createTeamController);
+teamRouter.get("/:teamId", authorizeMember, getTeamController);
+teamRouter.patch("/:teamId", authorizeTeamOwner, validateBody(updateTeamSchema), updateTeamController);
+teamRouter.delete("/:teamId", authorizeTeamOwner, deleteTeamController);
+
+teamRouter.get("/users/:userId", getTeamsByUserController);
+
+teamRouter.post("/:teamId/members/:email", authorizeTeamOwner, inviteToTeamController);
+teamRouter.post("/:teamId/members", acceptInviteController);
+teamRouter.get("/:teamId/members", authorizeMember, getTeamMembersController);
+teamRouter.delete("/:teamId/members/:userId", passOne(authorizeTeamOwner, authorizeOwnUser), removeMemberController);
 
 export default teamRouter;

@@ -1,14 +1,6 @@
-import User from "../entities/User.entity";
+import { z } from "zod";
+import { createUserSchema, updateUserSchema } from "../schemas/users.schemas";
 
-export type TUserCreation = {
-    email: string;
-    password: string;
-    birthdate: string;
-    firstName: string;
-    lastName: string;
-    picture: string | null;
-}
+export type TUserCreation = z.infer<typeof createUserSchema>;
 
-export type TUserUpdate = Partial<TUserCreation>;
-
-export type TUserResponse = Omit<User, "password">;
+export type TUserUpdate = z.infer<typeof updateUserSchema>;
