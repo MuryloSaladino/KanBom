@@ -3,9 +3,9 @@ import Member from "../entities/Member.entity";
 import Workspace from "../entities/Workspace.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors";
-import { TTeamCreation, TTeamUpdate } from "../types/teams.types";
+import { TWorkspaceCreation, TWorkspaceUpdate } from "../types/workspaces.types";
 
-export async function createWorkspaceService(userId:string, payload:TTeamCreation) {
+export async function createWorkspaceService(userId:string, payload:TWorkspaceCreation) {
     
     const workspaceRepo = AppDataSource.getRepository(Workspace);
     const userRepo = AppDataSource.getRepository(User);
@@ -43,7 +43,7 @@ export async function getWorkspacesByUserService(userId:string) {
     })
 }
 
-export async function updateWorkspaceService(workspaceId:string, payload:TTeamUpdate) {
+export async function updateWorkspaceService(workspaceId:string, payload:TWorkspaceUpdate) {
 
     const repo = AppDataSource.getRepository(Workspace);
 

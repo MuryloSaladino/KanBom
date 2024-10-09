@@ -2,9 +2,9 @@ import AppDataSource from "../data-source";
 import BoardRole from "../entities/BoardRole.entity";
 import Board from "../entities/Board.entity";
 import AppError from "../errors";
-import { TParticipantUpdate, TProjectCreation, TProjectUpdate } from "../types/projects.types";
+import { TBoardRoleUpdate, TBoardCreation, TBoardUpdate } from "../types/boards.types";
 
-export async function createBoardService(userId:string, payload:TProjectCreation) {
+export async function createBoardService(userId:string, payload:TBoardCreation) {
     
     const boardRepo = AppDataSource.getRepository(Board);
     const roleRepo = AppDataSource.getRepository(BoardRole);
@@ -18,7 +18,7 @@ export async function createBoardService(userId:string, payload:TProjectCreation
     return board;
 }
 
-export async function updateBoardService(boardId:string, payload:TProjectUpdate) {
+export async function updateBoardService(boardId:string, payload:TBoardUpdate) {
     
     const repo = AppDataSource.getRepository(Board);
 
@@ -37,7 +37,7 @@ export async function deleteBoardService(projectId:string) {
     await repo.softRemove(board);
 }
 
-export async function updateBoardRoleService(boardId:string, userId:string, payload:TParticipantUpdate) {
+export async function updateBoardRoleService(boardId:string, userId:string, payload:TBoardRoleUpdate) {
     const repo = AppDataSource.getRepository(BoardRole)
     
     const boardRole = await repo.findOneBy({ userId, boardId });

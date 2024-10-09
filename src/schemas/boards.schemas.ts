@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { roles } from "../types/projects.types";
+import { roles } from "../types/boards.types";
 
 export const createBoardSchema = z.object({
     name: z.string().min(3).max(50),

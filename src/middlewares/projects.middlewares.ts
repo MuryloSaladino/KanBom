@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import AppDataSource from "../data-source";
 import AppError from "../errors";
 import BoardRole from "../entities/BoardRole.entity";
-import { TParticipantRole } from "../types/projects.types";
+import { TBoardRole } from "../types/boards.types";
 
 export async function authorizeParticipant(req:Request, res:Response, next:NextFunction) {
     
@@ -15,7 +15,7 @@ export async function authorizeParticipant(req:Request, res:Response, next:NextF
     next()
 }
 
-export function authorizeParticipantByRole(roles:TParticipantRole[]) {
+export function authorizeParticipantByRole(roles:TBoardRole[]) {
     return async (req:Request, res:Response, next:NextFunction) => {
 
         const found = await AppDataSource.getRepository(BoardRole).findOneBy({
