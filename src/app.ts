@@ -6,10 +6,10 @@ import "reflect-metadata";
 import userRouter from "./routes/users.routes";
 import handleError from "./middlewares/handleError.middleware";
 import loginRouter from "./routes/login.routes";
-import teamRouter from "./routes/teams.routes";
+import workspacesRouter from "./routes/workspaces.routes";
 import { serve, setup } from "swagger-ui-express";
 import swaggerDocs from "../docs/routes/swagger.json"
-import projectRouter from "./routes/projects.routes";
+import boardsRouter from "./routes/boards.routes";
 
 
 const app = express();
@@ -22,8 +22,8 @@ app.use(cors());
 // Routers
 app.use("/api/login", loginRouter);
 app.use("/api/users", userRouter);
-app.use("/api/teams", teamRouter);
-app.use("/api/projects", projectRouter);
+app.use("/api/teams", workspacesRouter);
+app.use("/api/projects", boardsRouter);
 
 
 // Docs
