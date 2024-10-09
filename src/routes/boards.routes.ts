@@ -3,14 +3,14 @@ import authenticate from "../middlewares/authenticate.middleware";
 import { createBoardController, deleteBoardController, updateBoardController } from "../controllers/boards.controllers";
 import validateBody from "../middlewares/validateBody.middleware";
 import { createBoardSchema } from "../schemas/boards.schemas";
-import { authorizeParticipantByRole } from "../middlewares/projects.middlewares";
+import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
 
 const boardsRouter = Router();
 
 boardsRouter.use(authenticate);
 
 boardsRouter.post("", validateBody(createBoardSchema), createBoardController);
-boardsRouter.patch("/:boardId", authorizeParticipantByRole(["Editor", "Owner"]), updateBoardController);
-boardsRouter.delete("/:boardId", authorizeParticipantByRole(["Owner"]), deleteBoardController);
+boardsRouter.patch("/:boardId", authorizeByBoardRole(["Editor", "Owner"]), updateBoardController);
+boardsRouter.delete("/:boardId", authorizeByBoardRole(["Owner"]), deleteBoardController);
 
 export default boardsRouter;

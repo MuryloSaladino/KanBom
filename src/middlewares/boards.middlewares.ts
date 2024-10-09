@@ -4,23 +4,12 @@ import AppError from "../errors";
 import BoardRole from "../entities/BoardRole.entity";
 import { TBoardRole } from "../types/boards.types";
 
-export async function authorizeParticipant(req:Request, res:Response, next:NextFunction) {
-    
-    const found = await AppDataSource.getRepository(BoardRole).existsBy({
-        userId: res.locals.userId,  
-        boardId: req.params.projectId,
-    })
-    if(!found) throw new AppError("You do not have authorization for that", 403)
-
-    next()
-}
-
-export function authorizeParticipantByRole(roles:TBoardRole[]) {
+export function authorizeByBoardRole(roles:TBoardRole[]) {
     return async (req:Request, res:Response, next:NextFunction) => {
 
         const found = await AppDataSource.getRepository(BoardRole).findOneBy({
             userId: res.locals.userId,  
-            boardId: req.params.projectId,
+            boardId: req.params.boardId,
         });
         if(!found) throw new AppError("You are not a part of that project", 403);
         
