@@ -4,12 +4,12 @@ import Board from "../entities/Board.entity";
 import AppError from "../errors";
 import { TBoardRoleUpdate, TBoardCreation, TBoardUpdate } from "../types/boards.types";
 
-export async function createBoardService(userId:string, payload:TBoardCreation) {
+export async function createBoardService(userId:string, workspaceId:string, payload:TBoardCreation) {
     
     const boardRepo = AppDataSource.getRepository(Board);
     const roleRepo = AppDataSource.getRepository(BoardRole);
 
-    const boardCreation = boardRepo.create(payload);
+    const boardCreation = boardRepo.create({ ...payload, workspaceId });
     const board = await boardRepo.save(boardCreation);
     
     const creatorRole = roleRepo.create({ board, userId, role: "Owner" });

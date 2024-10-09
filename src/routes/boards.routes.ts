@@ -9,7 +9,7 @@ const boardsRouter = Router();
 
 boardsRouter.use(authenticate);
 
-boardsRouter.post("", validateBody(createBoardSchema), createBoardController);
+boardsRouter.post("/workspaces/:workspaceId", validateBody(createBoardSchema), createBoardController);
 boardsRouter.patch("/:boardId", authorizeByBoardRole(["Editor", "Owner"]), updateBoardController);
 boardsRouter.patch("/:boardId/users/:userId", authorizeByBoardRole(["Owner"]), validateBody(updateboardRoleSchema), updateBoardRoleController)
 boardsRouter.delete("/:boardId", authorizeByBoardRole(["Owner"]), deleteBoardController);
