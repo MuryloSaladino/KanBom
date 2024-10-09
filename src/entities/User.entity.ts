@@ -2,7 +2,7 @@ import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToMany, OneT
 import BaseEntity from "./common/BaseEntity.entity";
 import UserDetails from "./UserDetails.entity";
 import { hashSync } from "bcryptjs";
-import Participant from "./Participant.entity";
+import BoardRole from "./BoardRole.entity";
 import Member from "./Member.entity";
 import Notification from "./Notification.entity";
 
@@ -18,12 +18,6 @@ export default class User extends BaseEntity {
     @OneToOne(() => UserDetails, { nullable: false, cascade: true, onDelete: "CASCADE" })
     @JoinColumn()
     details?: UserDetails;
-
-    @OneToMany(() => Participant, (participation) => participation.user)
-    participations?: Participant[];
-
-    @OneToMany(() => Member, (member) => member.user)
-    memberIn?: Member[];
 
     @OneToMany(() => Notification, (notification) => notification.user)
     notifications?: Member[];

@@ -1,11 +1,11 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
-import Project from "./Project.entity";
+import Board from "./Board.entity";
 import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
 import { TParticipantRole } from "../types/projects.types";
 
-@Entity("participants")
-export default class Participant extends NoIdBaseEntity {
+@Entity("board_roles")
+export default class BoardRole extends NoIdBaseEntity {
 
     @Column({ type: "varchar", length: 20 })
     role?: TParticipantRole;
@@ -14,14 +14,14 @@ export default class Participant extends NoIdBaseEntity {
     userId?: string;
 
     @PrimaryColumn()
-    projectId?: string;
+    boardId?: string;
     
-    @ManyToOne(() => User, (user) => user.participations, { cascade: true, onDelete: "CASCADE" })
+    @ManyToOne(() => User, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Project, (project) => project.participants, { cascade: true, onDelete: "CASCADE" })
-    @JoinColumn({ name: "projectId" })
-    project?: Project;
+    @ManyToOne(() => Board, { cascade: true, onDelete: "CASCADE" })
+    @JoinColumn({ name: "boardId" })
+    board?: Board;
 
 }

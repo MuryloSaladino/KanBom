@@ -1,13 +1,13 @@
 import AppDataSource from "../data-source";
 import Member from "../entities/Member.entity";
-import Team from "../entities/Team.entity";
+import Workspace from "../entities/Workspace.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors";
 import { TTeamCreation, TTeamUpdate } from "../types/teams.types";
 
-export async function createTeamService(userId:string, payload:TTeamCreation): Promise<Team> {
+export async function createTeamService(userId:string, payload:TTeamCreation): Promise<Workspace> {
     
-    const teamRepo = AppDataSource.getRepository(Team);
+    const teamRepo = AppDataSource.getRepository(Workspace);
     const userRepo = AppDataSource.getRepository(User);
     const memberRepo = AppDataSource.getRepository(Member);
 
@@ -25,7 +25,7 @@ export async function createTeamService(userId:string, payload:TTeamCreation): P
 
 export async function getTeamService(teamId:string) {
 
-    const repo = AppDataSource.getRepository(Team);
+    const repo = AppDataSource.getRepository(Workspace);
 
     const found = await repo.findOne({
         where: { id: teamId },
@@ -37,14 +37,14 @@ export async function getTeamService(teamId:string) {
 }
 
 export async function getTeamsByUserService(userId:string) {
-    return await AppDataSource.getRepository(Team).find({
+    return await AppDataSource.getRepository(Workspace).find({
         where: { members: { userId } }
     })
 }
 
 export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
 
-    const repo = AppDataSource.getRepository(Team);
+    const repo = AppDataSource.getRepository(Workspace);
 
     const team = await repo.findOneBy({ id: teamId });
     if(!team) throw new AppError("Team not found", 404);
@@ -54,7 +54,7 @@ export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
 
 export async function deleteTeamService(teamId:string) {
     
-    const repo = AppDataSource.getRepository(Team);
+    const repo = AppDataSource.getRepository(Workspace);
 
     const team = await repo.findOneBy({ id: teamId });
     if(!team) throw new AppError("Team not found", 404);

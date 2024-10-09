@@ -1,7 +1,7 @@
 import AppDataSource from "../data-source";
 import Notification from "../entities/Notification.entity";
-import Participant from "../entities/Participant.entity";
-import Project from "../entities/Project.entity";
+import BoardRole from "../entities/BoardRole.entity";
+import Board from "../entities/Board.entity";
 import ProjectInvite from "../entities/ProjectInvite.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors";
@@ -9,7 +9,7 @@ import { TInviteToProject, TParticipantUpdate } from "../types/projects.types";
 
 export async function inviteParticipantService(projectId:string, email:string, payload:TInviteToProject) {
     const userRepo = AppDataSource.getRepository(User);
-    const projectRepo = AppDataSource.getRepository(Project);
+    const projectRepo = AppDataSource.getRepository(Board);
     const inviteRepo = AppDataSource.getRepository(ProjectInvite)
 
     const user = await userRepo.findOneBy({ email });
@@ -30,7 +30,7 @@ export async function inviteParticipantService(projectId:string, email:string, p
 export async function acceptProjectInvitationService(projectId:string, userId:string) {
 
     const inviteRepo = AppDataSource.getRepository(ProjectInvite);
-    const participantRepo = AppDataSource.getRepository(Participant);
+    const participantRepo = AppDataSource.getRepository(BoardRole);
 
     const invite = await inviteRepo.findOneBy({ userId, projectId });
     if(!invite) throw new AppError("You don't have an invite to enter that project")
@@ -40,29 +40,29 @@ export async function acceptProjectInvitationService(projectId:string, userId:st
 }
 
 export async function getProjectParticipantsService(projectId:string) {
-    return await AppDataSource.getRepository(Participant).find({
-        where: { projectId },
+    return await AppDataSource.getRepository(BoardRole).find({
+        where: { boardId: projectId },
         relations: { user: { details: true } }
     });
 }
 
 export async function updateParticipantService(projectId:string, userId:string, payload:TParticipantUpdate) {
-    const repo = AppDataSource.getRepository(Participant)
+    const repo = AppDataSource.getRepository(BoardRole)
     
-    const participant = await repo.findOneBy({ userId, projectId });
+    const participant = await repo.findOneBy({ userId, boardId: projectId });
     if(!participant) throw new AppError("Participant not found", 404);
 
     return await repo.save({ ...participant, ...payload })
 }
 
 export async function removeParticipantService(projectId:string, userId:string) {
-    const repo = AppDataSource.getRepository(Participant)
+    const repo = AppDataSource.getRepository(BoardRole)
     
-    const participant = await repo.findOneBy({ userId, projectId });
+    const participant = await repo.findOneBy({ userId, boardId: projectId });
     if(!participant) throw new AppError("Participant not found", 404);
     
     if(participant.role == "Owner") {
-        const ownerCount = await repo.countBy({ projectId, role: "Owner" })
+        const ownerCount = await repo.countBy({ boardId: projectId, role: "Owner" })
         if(ownerCount == 1)
             throw new AppError("You must pass along the ownership before leaving the team");
     }

@@ -2,13 +2,13 @@ import { NextFunction, Request, Response } from "express";
 import AppDataSource from "../data-source";
 import Member from "../entities/Member.entity";
 import AppError from "../errors";
-import Team from "../entities/Team.entity";
+import Workspace from "../entities/Workspace.entity";
 
 export async function authorizeMember(req:Request, res:Response, next:NextFunction) {
     
     const found = await AppDataSource.getRepository(Member).existsBy({
         userId: res.locals.userId,
-        teamId: req.params.teamId
+        workspaceId: req.params.teamId
     });
     if(!found) throw new AppError("You do not have authorization for that", 403);
     
@@ -18,7 +18,7 @@ export async function authorizeMember(req:Request, res:Response, next:NextFuncti
 export async function authorizeTeamOwner(req:Request, res:Response, next:NextFunction) {
     
     const team = await AppDataSource
-        .getRepository(Team)
+        .getRepository(Workspace)
         .findOneBy({ id: req.params.teamId });
     if(!team) throw new AppError("Team not found", 404);
 

@@ -3,8 +3,8 @@ import User from "./User.entity";
 import BaseEntity from "./common/BaseEntity.entity";
 import Member from "./Member.entity";
 
-@Entity("teams")
-export default class Team extends BaseEntity {
+@Entity("workspaces")
+export default class Workspace extends BaseEntity {
 
     @Column({ type: "varchar", length: 50 })
     name?: string;

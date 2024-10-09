@@ -1,21 +1,21 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
-import Team from "./Team.entity";
+import Workspace from "./Workspace.entity";
 
-@Entity("team_invites")
-export default class TeamInvite {
+@Entity("workspace_invites")
+export default class WorkspaceInvite {
    
     @PrimaryColumn()
     userId?: string;
 
     @PrimaryColumn()
-    teamId?: string;
+    workspaceId?: string;
 
     @ManyToOne(() => User, { onDelete: "CASCADE" })
     @JoinColumn({ name: "userId" })
     user?: User;
 
-    @ManyToOne(() => Team, { onDelete: "CASCADE" })
-    @JoinColumn({ name: "teamId" })
-    team?: Team;
+    @ManyToOne(() => Workspace, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "workspaceId" })
+    workspace?: Workspace;
 }
