@@ -10,9 +10,9 @@ const workspacesRouter = Router();
 workspacesRouter.use(authenticate);
 
 workspacesRouter.post("", validateBody(createWorkspaceSchema), createWorkspaceController);
-workspacesRouter.get("/:teamId", authorizeMember, getWorkspaceController);
+workspacesRouter.get("/:workspaceId", authorizeMember, getWorkspaceController);
 workspacesRouter.get("/users/:userId", getWorkspacesByUserController);
-workspacesRouter.patch("/:teamId", authorizeWorkspaceOwner, validateBody(updateWorkspaceSchema), updateWorkspaceController);
-workspacesRouter.delete("/:teamId", authorizeWorkspaceOwner, deleteWorkspaceController);
+workspacesRouter.patch("/:workspaceId", authorizeWorkspaceOwner, validateBody(updateWorkspaceSchema), updateWorkspaceController);
+workspacesRouter.delete("/:workspaceId", authorizeWorkspaceOwner, deleteWorkspaceController);
 
 export default workspacesRouter;
