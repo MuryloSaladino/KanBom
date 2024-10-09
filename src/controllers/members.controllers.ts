@@ -1,22 +1,22 @@
 import { Request, Response } from "express";
 import { acceptWorkspaceInviteService, getWorkspaceMembersService, inviteMemberService, removeMemberService } from "../services/members.services";
 
-export async function getTeamMembersController(req:Request, res:Response) {
-    const service = await getWorkspaceMembersService(req.params.teamId);
-    return res.status(200).json(service);
+export async function getWorkspaceMembersController(req:Request, res:Response) {
+    const members = await getWorkspaceMembersService(req.params.workspaceId);
+    return res.status(200).json(members);
 }
 
-export async function inviteToTeamController(req:Request, res:Response) {
-    await inviteMemberService(req.params.email, req.params.teamId);
+export async function inviteMemberController(req:Request, res:Response) {
+    await inviteMemberService(req.params.email, req.params.workspaceId);
     return res.status(204).send();
 }
 
-export async function acceptInviteController(req:Request, res:Response) {
-    await acceptWorkspaceInviteService(req.params.teamId, res.locals.userId);
+export async function acceptWorkspaceInviteController(req:Request, res:Response) {
+    await acceptWorkspaceInviteService(req.params.workspaceId, res.locals.userId);
     return res.status(204).send();
 }
 
 export async function removeMemberController(req:Request, res:Response) {
-    await removeMemberService(req.params.teamId, req.params.userId);
+    await removeMemberService(req.params.workspaceId, req.params.userId);
     return res.status(204).send();
 }

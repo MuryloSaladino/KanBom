@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import User from "./User.entity";
 import BaseEntity from "./common/BaseEntity.entity";
 import Member from "./Member.entity";
+import Board from "./Board.entity";
 
 @Entity("workspaces")
 export default class Workspace extends BaseEntity {
@@ -16,6 +17,9 @@ export default class Workspace extends BaseEntity {
     @JoinColumn({ name: "ownerId" })
     owner?: User;
 
-    @OneToMany(() => Member, (member) => member.team)
+    @OneToMany(() => Member, (m) => m.team)
     members?: Member[];
+
+    @OneToMany(() => Board, (b) => b.workspace)
+    boards?: Board[];
 }

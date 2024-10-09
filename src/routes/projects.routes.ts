@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authenticate from "../middlewares/authenticate.middleware";
-import { createProjectController, deleteProjectController, getProjectsByUserController, updateProjectController } from "../controllers/projects.controllers";
+import { createBoardController, deleteBoardController, getBoardsByUserController, updateBoardController } from "../controllers/boards.controllers";
 import validateBody from "../middlewares/validateBody.middleware";
 import { createProjectSchema, inviteToProjectSchema } from "../schemas/projects.schemas";
 import { authorizeParticipant, authorizeParticipantByRole } from "../middlewares/projects.middlewares";
@@ -12,11 +12,11 @@ const projectRouter = Router();
 
 projectRouter.use(authenticate)
 
-projectRouter.post("", validateBody(createProjectSchema), createProjectController);
-projectRouter.patch("/:projectId", authorizeParticipantByRole(["Editor", "Owner"]), updateProjectController)
-projectRouter.delete("/:projectId", authorizeParticipantByRole(["Owner"]), deleteProjectController)
+projectRouter.post("", validateBody(createProjectSchema), createBoardController);
+projectRouter.patch("/:projectId", authorizeParticipantByRole(["Editor", "Owner"]), updateBoardController)
+projectRouter.delete("/:projectId", authorizeParticipantByRole(["Owner"]), deleteBoardController)
 
-projectRouter.get("/users/:userId", getProjectsByUserController);
+projectRouter.get("/users/:userId", getBoardsByUserController);
 
 projectRouter.post("/:projectId/participants/:email", authorizeParticipantByRole(["Owner"]), validateBody(inviteToProjectSchema), inviteToProjectController);
 projectRouter.post("/:projectId/participants", acceptProjectInvitationController);

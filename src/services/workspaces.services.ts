@@ -38,7 +38,8 @@ export async function getWorkspaceService(workspaceId:string) {
 
 export async function getWorkspacesByUserService(userId:string) {
     return await AppDataSource.getRepository(Workspace).find({
-        where: { members: { userId } }
+        where: { members: { userId } },
+        relations: { boards: true }
     })
 }
 
