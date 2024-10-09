@@ -17,7 +17,7 @@ export default class Workspace extends BaseEntity {
     @JoinColumn({ name: "ownerId" })
     owner?: User;
 
-    @OneToMany(() => Member, (m) => m.team)
+    @OneToMany(() => Member, (m) => m.workspace)
     members?: Member[];
 
     @OneToMany(() => Board, (b) => b.workspace)

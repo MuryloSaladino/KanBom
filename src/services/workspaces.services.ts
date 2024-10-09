@@ -17,7 +17,7 @@ export async function createWorkspaceService(userId:string, payload:TWorkspaceCr
     const workspaceCreation = workspaceRepo.create({ ...payload, owner });
     const workspace = await workspaceRepo.save(workspaceCreation);
 
-    const firstMember = memberRepo.create({ user: owner, team: workspace });
+    const firstMember = memberRepo.create({ user: owner, workspace: workspace });
     await memberRepo.save(firstMember);
 
     return workspace;

@@ -9,9 +9,9 @@ const membersRouter = Router();
 
 membersRouter.use(authenticate);
 
-membersRouter.post("/:email", authorizeWorkspaceOwner, inviteMemberController);
-membersRouter.post("", acceptWorkspaceInviteController);
-membersRouter.get("", authorizeMember, getWorkspaceMembersController);
-membersRouter.delete("/:userId", passOne(authorizeWorkspaceOwner, authorizeOwnUser), removeMemberController);
+membersRouter.post("/:workspaceId/members/:email", authorizeWorkspaceOwner, inviteMemberController);
+membersRouter.post("/:workspaceId/members", acceptWorkspaceInviteController);
+membersRouter.get("/:workspaceId/members", authorizeMember, getWorkspaceMembersController);
+membersRouter.delete("/:workspaceId/members/:userId", passOne(authorizeWorkspaceOwner, authorizeOwnUser), removeMemberController);
 
 export default membersRouter;
