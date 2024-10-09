@@ -1,13 +1,13 @@
 import { z } from "zod";
-import { createProjectSchema, inviteToProjectSchema, participantUpdateSchema, updateProjectSchema } from "../schemas/projects.schemas";
+import { createBoardSchema, boardRoleSchema, boardRoleUpdateSchema, updateBoardSchema } from "../schemas/boards.schemas";
 
 export const roles = ["Owner", "Editor", "Reader"] as const;
 export type TParticipantRole = typeof roles[number];
 
-export type TProjectCreation = z.infer<typeof createProjectSchema>;
+export type TProjectCreation = z.infer<typeof createBoardSchema>;
 
-export type TProjectUpdate = z.infer<typeof updateProjectSchema>;
+export type TProjectUpdate = z.infer<typeof updateBoardSchema>;
 
-export type TInviteToProject = z.infer<typeof inviteToProjectSchema>;
+export type TInviteToProject = z.infer<typeof boardRoleSchema>;
 
-export type TParticipantUpdate = z.infer<typeof participantUpdateSchema>;
+export type TParticipantUpdate = z.infer<typeof boardRoleUpdateSchema>;

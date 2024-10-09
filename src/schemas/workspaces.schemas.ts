@@ -1,9 +1,9 @@
 import { z } from "zod";
 
-export const createTeamSchema = z.object({
+export const createWorkspaceSchema = z.object({
     name: z.string().min(3).max(50),
 }).strict()
 
-export const updateTeamSchema = z.object({
+export const updateWorkspaceSchema = z.object({
     name: z.string().min(3).max(50).optional(),
 }).strict()
