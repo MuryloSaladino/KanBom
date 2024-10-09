@@ -5,59 +5,59 @@ import User from "../entities/User.entity";
 import AppError from "../errors";
 import { TTeamCreation, TTeamUpdate } from "../types/teams.types";
 
-export async function createTeamService(userId:string, payload:TTeamCreation): Promise<Workspace> {
+export async function createWorkspaceService(userId:string, payload:TTeamCreation) {
     
-    const teamRepo = AppDataSource.getRepository(Workspace);
+    const workspaceRepo = AppDataSource.getRepository(Workspace);
     const userRepo = AppDataSource.getRepository(User);
     const memberRepo = AppDataSource.getRepository(Member);
 
     const owner = await userRepo.findOneBy({ id: userId });
     if(!owner) throw new AppError("User not found", 404);
 
-    const team = teamRepo.create({ ...payload, owner });
-    const savedTeam = await teamRepo.save(team);
+    const workspaceCreation = workspaceRepo.create({ ...payload, owner });
+    const workspace = await workspaceRepo.save(workspaceCreation);
 
-    const firstMember = memberRepo.create({ user: owner, team: savedTeam });
+    const firstMember = memberRepo.create({ user: owner, team: workspace });
     await memberRepo.save(firstMember);
 
-    return savedTeam;
+    return workspace;
 }
 
-export async function getTeamService(teamId:string) {
+export async function getWorkspaceService(workspaceId:string) {
 
     const repo = AppDataSource.getRepository(Workspace);
 
     const found = await repo.findOne({
-        where: { id: teamId },
+        where: { id: workspaceId },
         relations: { members: { user: { details: true } } }
     });
-    if(!found) throw new AppError("Team not found", 404);
+    if(!found) throw new AppError("Workspace not found", 404);
     
     return found;
 }
 
-export async function getTeamsByUserService(userId:string) {
+export async function getWorkspacesByUserService(userId:string) {
     return await AppDataSource.getRepository(Workspace).find({
         where: { members: { userId } }
     })
 }
 
-export async function updateTeamService(teamId:string, payload:TTeamUpdate) {
+export async function updateWorkspaceService(workspaceId:string, payload:TTeamUpdate) {
 
     const repo = AppDataSource.getRepository(Workspace);
 
-    const team = await repo.findOneBy({ id: teamId });
-    if(!team) throw new AppError("Team not found", 404);
+    const workspace = await repo.findOneBy({ id: workspaceId });
+    if(!workspace) throw new AppError("Team not found", 404);
 
-    return await repo.save({ ...team, ...payload });
+    return await repo.save({ ...workspace, ...payload });
 }
 
-export async function deleteTeamService(teamId:string) {
+export async function deleteWorkspaceService(workspaceId:string) {
     
     const repo = AppDataSource.getRepository(Workspace);
 
-    const team = await repo.findOneBy({ id: teamId });
-    if(!team) throw new AppError("Team not found", 404);
+    const workspace = await repo.findOneBy({ id: workspaceId });
+    if(!workspace) throw new AppError("Team not found", 404);
 
-    await repo.save({ ...team, deletedAt: new Date() });
+    await repo.softRemove(workspace);
 }

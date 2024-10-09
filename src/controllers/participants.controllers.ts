@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { acceptProjectInvitationService, getProjectParticipantsService, inviteParticipantService, removeParticipantService, updateParticipantService } from "../services/participants.services";
+import { acceptProjectInvitationService, getProjectParticipantsService, inviteParticipantService, removeParticipantService, updateBoardRoleService } from "../services/participants.services";
 
 export async function inviteToProjectController(req:Request, res:Response) {
     await inviteParticipantService(req.params.projectId, req.params.email, req.body);
@@ -17,7 +17,7 @@ export async function getParticipantsByProjectController(req:Request, res:Respon
 }
 
 export async function updateParticipantController(req:Request, res:Response) {
-    const service = await updateParticipantService(req.params.projectId, req.params.userId, req.body);
+    const service = await updateBoardRoleService(req.params.projectId, req.params.userId, req.body);
     return res.status(200).json(service)
 }
 

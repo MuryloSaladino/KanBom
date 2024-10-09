@@ -19,6 +19,9 @@ export default class User extends BaseEntity {
     @JoinColumn()
     details?: UserDetails;
 
+    @OneToMany(() => Member, (member) => member.user)
+    memberIn?: Member[];
+
     @OneToMany(() => Notification, (notification) => notification.user)
     notifications?: Member[];
 
