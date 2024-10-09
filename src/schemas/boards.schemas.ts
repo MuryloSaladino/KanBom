@@ -15,6 +15,6 @@ export const boardRoleSchema = z.object({
     role: z.enum(roles)
 }).strict()
 
-export const boardRoleUpdateSchema = z.object({
+export const updateboardRoleSchema = z.object({
     role: z.enum(roles).optional()
 }).strict()
