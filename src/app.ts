@@ -26,7 +26,7 @@ app.use("/api/login", loginRouter);
 app.use("/api/users", userRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/workspaces", workspacesRouter);
-app.use("/api/workspaces/:workspaceId", membersRouter);
+app.use("/api/workspaces/:workspaceId/members", membersRouter);
 app.use("/api/boards", boardsRouter);
 
 
