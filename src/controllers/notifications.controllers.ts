@@ -2,8 +2,8 @@ import { Request, Response } from "express";
 import { deleteNotificationService, getNotificationsService } from "../services/notifications.services";
 
 export async function getNotificationsController(req:Request, res:Response) {
-    const service = await getNotificationsService(res.locals.userId);
-    return res.status(200).json(service);
+    const notifications = await getNotificationsService(res.locals.userId);
+    return res.status(200).json(notifications);
 }
 
 export async function deleteNotificationController(req:Request, res:Response) {

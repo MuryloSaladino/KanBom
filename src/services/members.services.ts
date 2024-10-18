@@ -1,60 +1,60 @@
 import AppDataSource from "../data-source";
-import Team from "../entities/Team.entity";
+import Workspace from "../entities/Workspace.entity";
 import User from "../entities/User.entity";
 import AppError from "../errors";
 import Notification from "../entities/Notification.entity";
 import Member from "../entities/Member.entity";
-import TeamInvite from "../entities/TeamInvite.entity";
+import WorkspaceInvite from "../entities/WorkspaceInvite.entity";
 
-export async function inviteMemberService(email:string, teamId:string) {
+export async function inviteMemberService(email:string, workspaceId:string) {
     const userRepo = AppDataSource.getRepository(User);
-    const teamRepo = AppDataSource.getRepository(Team);
-    const inviteRepo = AppDataSource.getRepository(TeamInvite);
+    const workspaceRepo = AppDataSource.getRepository(Workspace);
+    const inviteRepo = AppDataSource.getRepository(WorkspaceInvite);
 
     const user = await userRepo.findOneBy({ email });
     if(!user) throw new AppError("User not found", 404);
 
-    const team = await teamRepo.findOneBy({ id: teamId });
-    if(!team) throw new AppError("Team not found", 404);
+    const workspace = await workspaceRepo.findOneBy({ id: workspaceId });
+    if(!workspace) throw new AppError("Workspace not found", 404);
 
-    await inviteRepo.save({ user, team })
+    await inviteRepo.save({ user, workspace })
     await AppDataSource
         .getRepository(Notification)
         .save({ user, content: JSON.stringify({
-            message: `You have been invited to work with ${team.name}!`,
-            actions: [{ title: "accept", url: `/members/invite/${team.id}` }]
+            message: `You have been invited to work at ${workspace.name}!`,
+            actions: [{ title: "accept", url: `/workspaces/${workspace.id}/members` }]
     })})
 }
 
-export async function acceptTeamInvitationService(teamId:string, userId:string) {
-    const inviteRepo = AppDataSource.getRepository(TeamInvite);
+export async function acceptWorkspaceInviteService(workspaceId:string, userId:string) {
+    const inviteRepo = AppDataSource.getRepository(WorkspaceInvite);
     const memberRepo = AppDataSource.getRepository(Member);
 
-    const invite = await inviteRepo.findOneBy({ teamId, userId });
-    if(!invite) throw new AppError("You don't have an invite to enter that team");
+    const invite = await inviteRepo.findOneBy({ workspaceId, userId });
+    if(!invite) throw new AppError("You don't have an invite to enter that workspace");
 
-    await memberRepo.upsert({ teamId, userId }, ["teamId", "userId"]);
+    await memberRepo.upsert({ workspaceId, userId }, ["workspaceId", "userId"]);
     await inviteRepo.remove(invite);
 }
 
-export async function getTeamMembersService(teamId:string) {
+export async function getWorkspaceMembersService(workspaceId:string) {
     return await AppDataSource.getRepository(User).find({
-        where: { memberIn: { teamId } },
+        where: { memberIn: { workspaceId } },
         relations: { details: true }
     });
 }
 
-export async function removeMemberService(teamId:string, userId:string) {
+export async function removeMemberService(workspaceId:string, userId:string) {
 
-    const team = await AppDataSource
-        .getRepository(Team)
-        .findOneBy({ id: teamId });
-    if(!team) throw new AppError("Team not found", 404);
+    const workspace = await AppDataSource
+        .getRepository(Workspace)
+        .findOneBy({ id: workspaceId });
+    if(!workspace) throw new AppError("Workspace not found", 404);
 
-    if(team.ownerId == userId)
-        throw new AppError("You can't leave the team before passing along the ownership");
+    if(workspace.ownerId == userId)
+        throw new AppError("You can't leave the workspace before passing along the ownership");
 
     await AppDataSource
         .getRepository(Member)
-        .softRemove({ teamId, userId });
+        .softRemove({ workspaceId, userId });
 }

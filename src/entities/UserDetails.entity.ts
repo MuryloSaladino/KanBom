@@ -1,8 +1,12 @@
-import { Column, Entity } from "typeorm";
-import BaseEntity from "./common/BaseEntity.entity";
+import { Column, Entity, OneToOne, PrimaryColumn } from "typeorm";
+import User from "./User.entity";
 
 @Entity("user_details")
-export default class UserDetails extends BaseEntity {
+export default class UserDetails {
+
+    @PrimaryColumn()
+    @OneToOne(() => User, { cascade: true })
+    user?: User;
 
     @Column({ type: "date" })
     birthdate?: string;

@@ -2,9 +2,10 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import User from "./User.entity";
 import BaseEntity from "./common/BaseEntity.entity";
 import Member from "./Member.entity";
+import Board from "./Board.entity";
 
-@Entity("teams")
-export default class Team extends BaseEntity {
+@Entity("workspaces")
+export default class Workspace extends BaseEntity {
 
     @Column({ type: "varchar", length: 50 })
     name?: string;
@@ -16,6 +17,9 @@ export default class Team extends BaseEntity {
     @JoinColumn({ name: "ownerId" })
     owner?: User;
 
-    @OneToMany(() => Member, (member) => member.team)
+    @OneToMany(() => Member, (m) => m.workspace)
     members?: Member[];
+
+    @OneToMany(() => Board, (b) => b.workspace)
+    boards?: Board[];
 }
