@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import BaseEntity from "./common/BaseEntity.entity";
 import Workspace from "./Workspace.entity";
 import Label from "./Label.entity";
+import CardList from "./CardList.entity";
 
 @Entity("boards")
 export default class Board extends BaseEntity {
@@ -21,4 +22,7 @@ export default class Board extends BaseEntity {
 
     @OneToMany(() => Label, (l) => l.board)
     labels?: Label[];
+
+    @OneToMany(() => CardList, (cl) => cl.board)
+    lists?: CardList[];
 }
