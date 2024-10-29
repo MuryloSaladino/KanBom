@@ -3,12 +3,12 @@ import { roles } from "../types/boards.types";
 
 export const createBoardSchema = z.object({
     name: z.string().min(3).max(50),
-    thumbnail: z.string().min(3).max(50).nullable(),
+    color: z.string().min(3).max(50).optional(),
 }).strict()
 
 export const updateBoardSchema = z.object({
     name: z.string().min(3).max(50).optional(),
-    thumbnail: z.string().min(3).max(50).nullable().optional(),
+    color: z.string().min(3).max(50).optional(),
 }).strict()
 
 export const boardRoleSchema = z.object({

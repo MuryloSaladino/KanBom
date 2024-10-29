@@ -9,8 +9,8 @@ export default class Board extends BaseEntity {
     @Column({ type: "varchar", length: 50 })
     name?: string;
 
-    @Column({ type: "varchar", length: 255, nullable: true })
-    thumbnail?: string | null;
+    @Column({ type: "char", length: 7, default: "#00B4D8" })
+    color?: string;
 
     @Column()
     workspaceId?: string;
