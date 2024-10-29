@@ -1,20 +1,20 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import User from "./User.entity";
 import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
 import Card from "./Card.entity";
+import Label from "./Label.entity";
 
-@Entity("card_participations")
-export default class CardParticipation extends NoIdBaseEntity {
+@Entity("card_labels")
+export default class CardLabel extends NoIdBaseEntity {
 
     @PrimaryColumn()
-    userId?: string;
+    labelId?: string;
 
     @PrimaryColumn()
     cardId?: string;
 
-    @ManyToOne(() => User, { cascade: true, onDelete: "CASCADE" })
-    @JoinColumn({ name: "userId" })
-    user?: User;
+    @ManyToOne(() => Label, { cascade: true, onDelete: "CASCADE" })
+    @JoinColumn({ name: "labelId" })
+    label?: Label;
 
     @ManyToOne(() => Card, { cascade: true, onDelete: "CASCADE" })
     @JoinColumn({ name: "cardId" })
