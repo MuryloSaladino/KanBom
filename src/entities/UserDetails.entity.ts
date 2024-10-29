@@ -1,15 +1,10 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
-import User from "./User.entity";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("user_details")
 export default class UserDetails {
 
-    @PrimaryColumn()
-    userId?: string;
-    
-    @OneToOne(() => User, (u) => u.details)
-    @JoinColumn({ name: "userId" })
-    user?: User;
+    @PrimaryGeneratedColumn("uuid")
+    id?: string;
 
     @Column({ type: "date" })
     birthdate?: string;

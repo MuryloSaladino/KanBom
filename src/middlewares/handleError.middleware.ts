@@ -18,6 +18,7 @@ export default function handleError(err:Error, _req:Request, res:Response, next:
             return res.status(400).json({ message: "Data could not be saved" });
 
         default:
+            console.error(err)
             return res.status(500).json({ message: "Internal Server Error" });
     }
 }
