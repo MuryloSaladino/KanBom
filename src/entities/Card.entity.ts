@@ -3,6 +3,7 @@ import CardList from "./CardList.entity";
 import BaseEntity from "./common/BaseEntity.entity";
 import CardParticipation from "./CardParticipation.entity";
 import CardLabel from "./CardLabel.entity";
+import CardLog from "./CardLog.entity";
 
 @Entity("cards")
 export default class Card extends BaseEntity {
@@ -23,5 +24,8 @@ export default class Card extends BaseEntity {
     participations?: CardParticipation[];
 
     @OneToMany(() => CardLabel, (cl) => cl.card)
-    labels?: CardLabel[]
+    labels?: CardLabel[];
+
+    @OneToMany(() => CardLog, (cl) => CardLog)
+    logs?: CardLog[];
 }
