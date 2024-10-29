@@ -1,11 +1,14 @@
-import { Column, Entity, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 
 @Entity("user_details")
 export default class UserDetails {
 
     @PrimaryColumn()
-    @OneToOne(() => User, { cascade: true })
+    userId?: string;
+    
+    @OneToOne(() => User, (u) => u.details)
+    @JoinColumn({ name: "userId" })
     user?: User;
 
     @Column({ type: "date" })

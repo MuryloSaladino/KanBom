@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 
 import "express-async-errors";
-import "reflect-metadata";
 import userRouter from "./routes/users.routes";
 import handleError from "./middlewares/handleError.middleware";
 import loginRouter from "./routes/login.routes";
