@@ -1,6 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import BaseEntity from "./common/BaseEntity.entity";
 import Workspace from "./Workspace.entity";
+import Label from "./Label.entity";
 
 @Entity("boards")
 export default class Board extends BaseEntity {
@@ -17,4 +18,7 @@ export default class Board extends BaseEntity {
     @ManyToOne(() => Workspace, (w) => w.boards, { onDelete: "CASCADE" })
     @JoinColumn({ name: "workspaceId" })
     workspace?: Workspace;
+
+    @OneToMany(() => Label, (l) => l.board)
+    labels?: Label[];
 }
