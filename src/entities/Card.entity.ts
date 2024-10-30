@@ -21,6 +21,12 @@ export default class Card extends BaseEntity {
     @Column({ type: "text" })
     detailedDescription?: string;
 
+    @Column({ type: "date", nullable: true })
+    startDate?: Date | null;
+    
+    @Column({ type: "date", nullable: true })
+    finishDate?: Date | null;
+
     @OneToMany(() => CardParticipation, (cd) => cd.card)
     participations?: CardParticipation[];
 
