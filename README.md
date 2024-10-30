@@ -21,3 +21,6 @@
         DB_USERNAME=root
         DB_PASSWORD=root
         DB_HOST=localhost
+
+        SECRET_KEY=JDSHJDHJFGKLJEHIJFDIJAHJHJhgfdhdshsejiisy
+        EXPIRES_IN=300000
