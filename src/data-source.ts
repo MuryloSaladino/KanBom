@@ -20,15 +20,13 @@ const buildSettings = (): DataSourceOptions => {
     
     const database = getEnv("DB_NAME");
     const type = getEnv("DB_TYPE");
-    const port = Number( getEnv("DB_PORT") );
     const username = getEnv("DB_USERNAME");
     const password = getEnv("DB_PASSWORD");
-    const host = getEnv("DB_HOST");
+    const url = getEnv("DB_URL");
 
     return {
+        url,
         type: type as "postgres" | "mssql",
-        host,
-        port,
         username,
         password,
         database,
