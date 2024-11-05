@@ -11,6 +11,7 @@ import swaggerDocs from "../docs/routes/swagger.json"
 import boardsRouter from "./routes/boards.routes";
 import membersRouter from "./routes/members.routes";
 import notificationsRouter from "./routes/notifications.routes";
+import cardListRouter from "./routes/cardLists.routes";
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/notifications", notificationsRouter);
 app.use("/api/workspaces", workspacesRouter);
 app.use("/api/workspaces", membersRouter);
 app.use("/api/boards", boardsRouter);
+app.use("/api/card-list", cardListRouter);
 
 
 // Docs
