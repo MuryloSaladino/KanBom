@@ -1,6 +1,6 @@
 import { z } from "zod";
-import { createWorkspaceSchema, updateWorkspaceSchema } from "../schemas/workspaces.schemas";
+import { WorkspaceSchema, updateWorkspaceSchema } from "../schemas/workspaces.schemas";
 
-export type TWorkspaceCreation = z.infer<typeof createWorkspaceSchema>;
+export type TWorkspaceCreation = z.infer<typeof WorkspaceSchema>;
 
 export type TWorkspaceUpdate = z.infer<typeof updateWorkspaceSchema>;

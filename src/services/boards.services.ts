@@ -3,6 +3,7 @@ import BoardRole from "../entities/BoardRole.entity";
 import Board from "../entities/Board.entity";
 import AppError from "../errors";
 import { TBoardRoleUpdate, TBoardCreation, TBoardUpdate } from "../types/boards.types";
+import BaseService from "../common/base.services";
 
 export async function createBoardService(userId:string, workspaceId:string, payload:TBoardCreation) {
     
@@ -44,4 +45,9 @@ export async function updateBoardRoleService(boardId:string, userId:string, payl
     if(!boardRole) throw new AppError("User is not in that board", 400);
 
     return await repo.save({ ...boardRole, ...payload })
+}
+
+export default class BoardsService extends BaseService<Board> {
+
+    public constructor() { super(Board) }
 }

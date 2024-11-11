@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { createBoardService, deleteBoardService, updateBoardRoleService, updateBoardService } from "../services/boards.services";
+import { Controller } from "../decorators/api.decorators";
 
 export async function createBoardController(req:Request, res:Response) {
     const board = await createBoardService(res.locals.userId, req.params.workspaceId, req.body);
@@ -19,4 +20,9 @@ export async function updateBoardRoleController(req:Request, res:Response) {
 export async function deleteBoardController(req:Request, res:Response) {
     await deleteBoardService(req.params.boardId);
     return res.status(204).send();
+}
+
+@Controller("/boards")
+export default class BoardsController {
+    
 }
