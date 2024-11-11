@@ -1,7 +1,17 @@
 import { Request, Response } from "express";
-import { loginService } from "../services/login.services";
+import { Controller, HttpMethod } from "../decorators/api.decorators";
+import LoginService from "../services/login.services";
 
-export async function loginController(req:Request, res:Response) {
-    const response = await loginService(req.body);
-    return res.status(200).json(response);
+@Controller("/login")
+export default class LoginController {
+
+    private service = new LoginService();
+
+    @HttpMethod("post")
+    login() {
+        return async (req:Request, res:Response) => {
+            const response = await this.service.login(req.body);
+            return res.status(200).json(response);
+        }
+    }
 }

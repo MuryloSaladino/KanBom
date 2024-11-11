@@ -1,4 +1,4 @@
-import { Router } from "express"
+import { Request, Response, Router } from "express"
 import controllers from "../controllers"
 
 export default function getControllers(): Router {
@@ -14,12 +14,12 @@ export default function getControllers(): Router {
             const path:string = Reflect.getMetadata("url", instance, key) || "";
             const middlewares = Reflect.getMetadata("middlewares", instance, key) || [];
 
-            console.log(key);
-            
+            const task = instance[key as keyof typeof instance] as () => 
+                (req:Request, res:Response) => Promise<void>
 
             if (httpMethod) {
                 (router[httpMethod] as (...args: any[]) => Router)(
-                    path, ...middlewares, instance[key as keyof typeof instance]()
+                    path, ...middlewares, task.bind(instance).call({})
                 );
             }
         }

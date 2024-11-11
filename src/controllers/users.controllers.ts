@@ -37,7 +37,7 @@ export default class UsersController {
         }
     }
 
-    @HttpMethod("patch")
+    @HttpMethod("delete")
     @Middlewares([authenticate])
     deleteUserByJWT() {
         return async (req:Request, res:Response) => {
