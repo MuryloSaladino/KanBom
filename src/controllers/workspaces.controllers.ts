@@ -5,19 +5,25 @@ import authenticate from "../middlewares/authenticate.middleware";
 import { authorizeMember, authorizeWorkspaceOwner } from "../middlewares/workspaces.middlewares";
 import validateBody from "../middlewares/validateBody.middleware";
 import { WorkspaceSchema } from "../schemas/workspaces.schemas";
+import MemebersService from "../services/members.services";
 
 @Controller("/workspaces")
 @ControllerMiddlewares([authenticate])
 export default class WorkspacesController {
 
     private service = new WorkspacesService();
+    private membersService = new MemebersService();
 
     @HttpMethod("post")
     @RouteMiddlewares([validateBody(WorkspaceSchema)])
     public create = async (req:Request, res:Response) => {
         const workspace = await this.service.create({
-            userId: res.locals.userId, 
+            ownerId: res.locals.userId, 
             ...req.body
+        });
+        await this.membersService.create({
+            userId: res.locals.userId,
+            workspaceId: workspace.id
         });
         return res.status(201).json(workspace);
     }
@@ -32,7 +38,6 @@ export default class WorkspacesController {
 
     @HttpMethod("get")
     @Route("/users/:userId")
-    @RouteMiddlewares([authenticate])
     public getByUser = async (req:Request, res:Response) => {
         const workspaces = await this.service.findAll({
             where: { members: { userId: req.params.userId } },

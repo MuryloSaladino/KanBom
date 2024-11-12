@@ -5,6 +5,7 @@ import AppError from "../errors";
 import Notification from "../entities/Notification.entity";
 import Member from "../entities/Member.entity";
 import WorkspaceInvite from "../entities/WorkspaceInvite.entity";
+import BaseService from "../common/base.services";
 
 export async function inviteMemberService(email:string, workspaceId:string) {
     const userRepo = AppDataSource.getRepository(User);
@@ -57,4 +58,9 @@ export async function removeMemberService(workspaceId:string, userId:string) {
     await AppDataSource
         .getRepository(Member)
         .softRemove({ workspaceId, userId });
+}
+
+export default class MemebersService extends BaseService<Member> {
+
+    public constructor() { super(Member) }
 }
