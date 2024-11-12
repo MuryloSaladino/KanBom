@@ -7,9 +7,15 @@ export function Controller(route: string) {
     };
 }
 
-export function Middlewares(middlewares: Array<Function>) {
+export function RouteMiddlewares(middlewares: Array<Function>) {
     return function(target: any, propertyKey: string) {
         Reflect.defineMetadata("middlewares", middlewares, target, propertyKey);
+    };
+}
+
+export function ControllerMiddlewares(middlewares: Array<Function>) {
+    return function(constructor: Function) {
+        Reflect.defineMetadata("middlewares", middlewares, constructor);
     };
 }
 

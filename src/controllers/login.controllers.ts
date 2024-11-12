@@ -8,10 +8,8 @@ export default class LoginController {
     private service = new LoginService();
 
     @HttpMethod("post")
-    login() {
-        return async (req:Request, res:Response) => {
-            const response = await this.service.login(req.body);
-            return res.status(200).json(response);
-        }
+    public login = async (req:Request, res:Response) => {
+        const response = await this.service.login(req.body);
+        return res.status(200).json(response);
     }
 }

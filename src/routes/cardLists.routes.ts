@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authenticate from "../middlewares/authenticate.middleware";
 import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
-import { createCardListController, deleteCardListController, getCardListsByBoardController, updateCardListController } from "../controllers/cardList.controllers";
+import { createCardListController, deleteCardListController, getCardListsByBoardController, updateCardListController } from "../controllers/card-list.controllers";
 
 const cardListRouter = Router();
 
