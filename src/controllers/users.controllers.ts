@@ -19,7 +19,7 @@ export default class UsersController {
 
     @HttpMethod("get")
     @RouteMiddlewares([authenticate])
-    public getUserByJWT = async (req:Request, res:Response) => {
+    public getUserByJWT = async (_req:Request, res:Response) => {
         const user = await this.service
             .findById(res.locals.userId, { details: true });
         return res.status(201).json(user)
@@ -34,7 +34,7 @@ export default class UsersController {
 
     @HttpMethod("delete")
     @RouteMiddlewares([authenticate])
-    public deleteUserByJWT = async (req:Request, res:Response) => {
+    public deleteUserByJWT = async (_req:Request, res:Response) => {
         await this.service.delete(res.locals.userId);
         return res.status(204).send();
     }

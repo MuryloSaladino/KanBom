@@ -1,3 +1,4 @@
+import CardListsController from "./card-list.controllers";
 import LoginController from "./login.controllers";
 import NotificationsController from "./notifications.controllers";
 import UsersController from "./users.controllers";
@@ -8,4 +9,5 @@ export default [
     LoginController,
     NotificationsController,
     WorkspacesController,
+    CardListsController,
 ]

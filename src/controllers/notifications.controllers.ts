@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import NotificationsService from "../services/notifications.services";
-import { Controller, HttpMethod, RouteMiddlewares, Route, ControllerMiddlewares } from "../decorators/api.decorators";
+import { Controller, HttpMethod, Route, ControllerMiddlewares } from "../decorators/api.decorators";
 import authenticate from "../middlewares/authenticate.middleware";
 
 @Controller("/notifications")
