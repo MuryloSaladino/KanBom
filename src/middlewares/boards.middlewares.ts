@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from "express";
 import AppDataSource from "../data-source";
 import AppError from "../errors";
 import BoardRole from "../entities/BoardRole.entity";
-import { BoardRole } from "../types/boards.types";
+import { IBoardRole } from "../types/boards.types";
 
-export function authorizeByBoardRole(roles:BoardRole[]) {
+export function authorizeByBoardRole(roles:IBoardRole[]) {
     return async (req:Request, res:Response, next:NextFunction) => {
 
         const found = await AppDataSource.getRepository(BoardRole).findOneBy({
