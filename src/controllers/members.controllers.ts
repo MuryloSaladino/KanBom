@@ -5,6 +5,7 @@ import authenticate from "../middlewares/authenticate.middleware";
 import { authorizeMember, authorizeWorkspaceOwner } from "../middlewares/workspaces.middlewares";
 import { passOne } from "../middlewares/utility.middlewares";
 import { authorizeOwnUser } from "../middlewares/users.middlewares";
+import NotificationsService from "../services/notifications.services";
 
 @Controller("/members/workspaces")
 @ControllerMiddlewares([authenticate])

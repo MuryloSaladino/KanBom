@@ -1,30 +1,30 @@
 import AppDataSource from "../data-source";
 import Workspace from "../entities/Workspace.entity";
-import User from "../entities/User.entity";
 import AppError from "../errors";
-import Notification from "../entities/Notification.entity";
 import Member from "../entities/Member.entity";
 import WorkspaceInvite from "../entities/WorkspaceInvite.entity";
 import BaseService from "../common/base.services";
+import UsersService from "./users.services";
+import WorkspacesService from "./workspaces.services";
+import NotificationsService from "./notifications.services";
 
 export default class MemebersService extends BaseService<Member> {
+
+    private usersService = new UsersService();
+    private workspacesService = new WorkspacesService();
+    private notificationsService = new NotificationsService();
+
 
     public constructor() { super(Member) }
 
     async inviteMember(email:string, workspaceId:string) {
-        const user = await AppDataSource.getRepository(User).findOneBy({ email });
-        if(!user) throw new AppError("User not found", 404);
-    
-        const workspace = await AppDataSource.getRepository(Workspace).findOneBy({ id: workspaceId });
-        if(!workspace) throw new AppError("Workspace not found", 404);
-    
+        const user = await this.usersService.findOne({ where: { email } });
+        const workspace = await this.workspacesService.findById(workspaceId);
         await AppDataSource.getRepository(WorkspaceInvite).save({ user, workspace })
         
-        await AppDataSource
-            .getRepository(Notification)
-            .save({ user, content: JSON.stringify({
-                message: `You have been invited to work at ${workspace.name}!`,
-                actions: [{ title: "accept", url: `/workspaces/${workspace.id}/members` }]
+        await this.notificationsService.create({ user, content: JSON.stringify({
+            message: `You have been invited to work at ${workspace.name}!`,
+            actions: [{ title: "accept", url: `/workspaces/${workspace.id}/members` }]
         })})
     }
 

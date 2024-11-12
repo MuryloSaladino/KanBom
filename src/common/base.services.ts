@@ -1,4 +1,4 @@
-import { DeepPartial, FindManyOptions, FindOptionsRelations, Repository } from "typeorm";
+import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsRelations, Repository } from "typeorm";
 import BaseEntity from "../entities/common/BaseEntity.entity";
 import AppDataSource from "../data-source";
 import AppError from "../errors";
@@ -29,6 +29,12 @@ export default class BaseService<TEntity extends BaseEntity> {
 
     public async findAll(options?: FindManyOptions<TEntity>): Promise<TEntity[]> {
         return await this.repo.find(options);
+    }
+
+    public async findOne(options: FindOneOptions<TEntity>): Promise<TEntity> {
+        const entity = await this.repo.findOne(options);
+        if(!entity) throw new AppError(`Entity not found`);
+        return entity;
     }
 
     public async update(id: TEntity["id"], payload: Omit<DeepPartial<TEntity>, "id">): Promise<TEntity> {
