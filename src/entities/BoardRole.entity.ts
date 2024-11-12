@@ -2,13 +2,13 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 import Board from "./Board.entity";
 import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
-import { TBoardRole } from "../types/boards.types";
+import { BoardRole } from "../types/boards.types";
 
 @Entity("board_roles")
 export default class BoardRole extends NoIdBaseEntity {
 
     @Column({ type: "varchar", length: 20 })
-    role?: TBoardRole;
+    role?: BoardRole;
 
     @PrimaryColumn()
     userId?: string;

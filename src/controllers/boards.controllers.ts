@@ -14,44 +14,36 @@ export default class BoardsController {
     @HttpMethod("post")
     @Route("/workspaces/:workspaceId")
     @Middlewares([authenticate, validateBody(BoardSchema)])
-    create() {
-        return async(req:Request, res:Response) => {
-            const board = await this.service.create({ 
-                userId: res.locals.userId, 
-                workspaceId: req.params.workspaceId, 
-                ...req.body
-            });
-            return res.status(201).json(board);
-        }
+    public create = async(req:Request, res:Response) => {
+        const board = await this.service.create({ 
+            userId: res.locals.userId, 
+            workspaceId: req.params.workspaceId, 
+            ...req.body
+        });
+        return res.status(201).json(board);
     }
 
     @HttpMethod("put")
     @Route("/:boardId")
     @Middlewares([authenticate, authorizeByBoardRole(["Editor", "Owner"])])
-    update() {
-        return async (req:Request, res:Response) => {
-            const board = await this.service.update(req.params.boardId, req.body);
-            return res.status(200).json(board);
-        }
+    public update = async (req:Request, res:Response) => {
+        const board = await this.service.update(req.params.boardId, req.body);
+        return res.status(200).json(board);
     }
 
     @HttpMethod("put")
     @Route("/:boardId/users/:userId")
     @Middlewares([authenticate, authorizeByBoardRole(["Editor", "Owner"])])
-    updateRole() {
-        return async (req:Request, res:Response) => {
-            const role = await updateBoardRoleService(req.params.boardId, req.params.userId, req.body);
-            return res.status(200).json(role);
-        }
+    public updateRole = async (req:Request, res:Response) => {
+        const role = await this.service.update(req.params.boardId, req.body);
+        return res.status(200).json(role);
     }
 
     @HttpMethod("delete")
     @Route("/:boardId")
     @Middlewares([authenticate, authorizeByBoardRole(["Owner"])])
-    delete() {
-        return async (req:Request, res:Response) => {
-            await deleteBoardService(req.params.boardId);
-            return res.status(204).send();
-        }
+    public delete = async (req:Request, res:Response) => {
+        await deleteBoardService(req.params.boardId);
+        return res.status(204).send();
     }
 }

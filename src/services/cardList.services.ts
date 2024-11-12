@@ -2,9 +2,9 @@ import AppDataSource from "../data-source";
 import Board from "../entities/Board.entity";
 import CardList from "../entities/CardList.entity";
 import AppError from "../errors";
-import { ICardListCreation, ICardListUpdate } from "../types/cards.types";
+import { ICardListPayload, ICardListUpdate } from "../types/cards.types";
 
-export async function createCardListService(boardId:string, payload:ICardListCreation) {
+export async function createCardListService(boardId:string, payload:ICardListPayload) {
     
     const board = await AppDataSource.getRepository(Board).findOneBy({ id: boardId });
     if(!board) throw new AppError("Board not found", 404);

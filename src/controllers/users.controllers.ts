@@ -8,42 +8,34 @@ import { Controller, HttpMethod, Middlewares } from "../decorators/api.decorator
 @Controller("/users")
 export default class UsersController {
     
-    private usersService = new UsersService();
+    private service = new UsersService();
 
     @HttpMethod("post")
     @Middlewares([validateBody(UserSchema)])
-    create() {
-        return async (req:Request, res:Response) => {
-            const user = await this.usersService.create(req.body);
-            return res.status(201).json({ ...user, password: undefined })
-        }
+    public create = async (req:Request, res:Response) => {
+        const user = await this.service.create(req.body);
+        return res.status(201).json({ ...user, password: undefined })
     }
 
     @HttpMethod("get")
     @Middlewares([authenticate])
-    getUserByJWT() {
-        return async (req:Request, res:Response) => {
-            const user = await this.usersService
-                .findById(res.locals.userId, { details: true });
-            return res.status(201).json(user)
-        }
+    public getUserByJWT = async (req:Request, res:Response) => {
+        const user = await this.service
+            .findById(res.locals.userId, { details: true });
+        return res.status(201).json(user)
     }
 
     @HttpMethod("put")
     @Middlewares([authenticate])
-    updateUserByJWT() {
-        return async (req:Request, res:Response) => {
-            const user = await this.usersService.update(res.locals.userId, req.body);
-            return res.status(200).json({ ...user, password: undefined })
-        }
+    public updateUserByJWT = async (req:Request, res:Response) => {
+        const user = await this.service.update(res.locals.userId, req.body);
+        return res.status(200).json({ ...user, password: undefined })
     }
 
     @HttpMethod("delete")
     @Middlewares([authenticate])
-    deleteUserByJWT() {
-        return async (req:Request, res:Response) => {
-            await this.usersService.delete(res.locals.userId);
-            return res.status(204).send();
-        }
+    public deleteUserByJWT = async (req:Request, res:Response) => {
+        await this.service.delete(res.locals.userId);
+        return res.status(204).send();
     }
 }
