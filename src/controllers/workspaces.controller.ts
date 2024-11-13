@@ -32,7 +32,10 @@ export default class WorkspacesController {
     @Route("/:workspaceId")
     @Middlewares([authorizeMember])
     public get = async (req:Request, res:Response) => {
-        const workspace = await this.service.findById(req.params.workspaceId);
+        const workspace = await this.service.findOne({
+            where: { id: req.params.workspaceId },
+            relations: { boards: true }
+        });
         return res.status(200).json(workspace);
     }
 
