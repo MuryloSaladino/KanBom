@@ -16,6 +16,11 @@ export default class BoardsService extends BaseService<Board> {
         return await this.roleRepo.save({ userId, boardId, ...payload })
     }
 
+    public async createRoleIfNull(boardId:string, userId:string, payload:IBoardRolePayload = { role: "Reader" }) {
+        const role = await this.roleRepo.findOneBy({ userId, boardId }) 
+        return role || await this.roleRepo.save({ userId, boardId, ...payload })
+    }
+
     public async updateRole(boardId:string, userId:string, payload:IBoardRolePayload) {
         const boardRole = await this.roleRepo.findOneBy({ userId, boardId });
         if(!boardRole) throw new AppError("User is not in that board", 400);

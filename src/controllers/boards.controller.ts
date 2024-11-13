@@ -5,6 +5,7 @@ import authenticate from "../middlewares/authenticate.middleware";
 import validateBody from "../middlewares/validateBody.middleware";
 import { BoardSchema } from "../schemas/boards.schemas";
 import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
+import { authorizeMemberByBoard } from "../middlewares/workspaces.middlewares";
 
 @Controller("/boards")
 @Middlewares([authenticate])
@@ -26,11 +27,12 @@ export default class BoardsController {
 
     @HttpMethod("get")
     @Route("/:boardId")
-    @Middlewares([authorizeByBoardRole(["Reader", "Editor", "Owner"])])
+    @Middlewares([authorizeMemberByBoard])
     public get = async (req:Request, res:Response) => {
         const board = await this.service.findOne({
-            where: { id: req.params.boardId },
+            where: { id: req.params.boardId }
         });
+        await this.service.createRoleIfNull(board.id!, res.locals.userId)
         return res.status(200).json(board);
     }
 
