@@ -1,10 +1,10 @@
-import BoardsController from "./boards.controllers";
-import CardListsController from "./card-list.controllers";
-import LoginController from "./login.controllers";
-import MemebersController from "./members.controllers";
-import NotificationsController from "./notifications.controllers";
-import UsersController from "./users.controllers";
-import WorkspacesController from "./workspaces.controllers";
+import BoardsController from "./boards.controller";
+import CardListsController from "./card-list.controller";
+import LoginController from "./login.controller";
+import MemebersController from "./members.controller";
+import NotificationsController from "./notifications.controller";
+import UsersController from "./users.controller";
+import WorkspacesController from "./workspaces.controller";
 
 export default [
     UsersController,
