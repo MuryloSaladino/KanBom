@@ -7,14 +7,19 @@ import BaseService from "../common/base.services";
 
 export default class BoardsService extends BaseService<Board> {
 
+    private roleRepo = AppDataSource.getRepository(BoardRole)
+
     public constructor() { super(Board) }
 
+
+    public async createRole(boardId:string, userId:string, payload:IBoardRolePayload) {
+        return await this.roleRepo.save({ userId, boardId, ...payload })
+    }
+
     public async updateRole(boardId:string, userId:string, payload:IBoardRolePayload) {
-        const repo = AppDataSource.getRepository(BoardRole)
-    
-        const boardRole = await repo.findOneBy({ userId, boardId });
+        const boardRole = await this.roleRepo.findOneBy({ userId, boardId });
         if(!boardRole) throw new AppError("User is not in that board", 400);
 
-        return await repo.save({ ...boardRole, ...payload })
+        return await this.roleRepo.save({ ...boardRole, ...payload })
     }
 }

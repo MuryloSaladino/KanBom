@@ -17,10 +17,10 @@ export default class BoardsController {
     @RouteMiddlewares([validateBody(BoardSchema)])
     public create = async(req:Request, res:Response) => {
         const board = await this.service.create({ 
-            userId: res.locals.userId, 
             workspaceId: req.params.workspaceId, 
             ...req.body
         });
+        await this.service.createRole(board.id!, res.locals.userId, { role: "Owner" })
         return res.status(201).json(board);
     }
 
