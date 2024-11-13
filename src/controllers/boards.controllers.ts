@@ -30,7 +30,6 @@ export default class BoardsController {
     public get = async (req:Request, res:Response) => {
         const board = await this.service.findOne({
             where: { id: req.params.boardId },
-            relations: { lists: true, labels: true }
         });
         return res.status(200).json(board);
     }
