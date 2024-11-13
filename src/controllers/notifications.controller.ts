@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import NotificationsService from "../services/notifications.services";
-import { Controller, HttpMethod, Route, ControllerMiddlewares } from "../decorators/api.decorators";
+import { Controller, HttpMethod, Route, Middlewares } from "../decorators/api.decorators";
 import authenticate from "../middlewares/authenticate.middleware";
 
 @Controller("/notifications")
-@ControllerMiddlewares([authenticate])
+@Middlewares([authenticate])
 export default class NotificationsController {
 
     private service = new NotificationsService();

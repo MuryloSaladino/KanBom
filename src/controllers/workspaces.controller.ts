@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import WorkspacesService from "../services/workspaces.services";
-import { Controller, HttpMethod, RouteMiddlewares, Route, ControllerMiddlewares } from "../decorators/api.decorators";
+import { Controller, HttpMethod, Middlewares, Route } from "../decorators/api.decorators";
 import authenticate from "../middlewares/authenticate.middleware";
 import { authorizeMember, authorizeWorkspaceOwner } from "../middlewares/workspaces.middlewares";
 import validateBody from "../middlewares/validateBody.middleware";
@@ -8,14 +8,14 @@ import { WorkspaceSchema } from "../schemas/workspaces.schemas";
 import MemebersService from "../services/members.services";
 
 @Controller("/workspaces")
-@ControllerMiddlewares([authenticate])
+@Middlewares([authenticate])
 export default class WorkspacesController {
 
     private service = new WorkspacesService();
     private membersService = new MemebersService();
 
     @HttpMethod("post")
-    @RouteMiddlewares([validateBody(WorkspaceSchema)])
+    @Middlewares([validateBody(WorkspaceSchema)])
     public create = async (req:Request, res:Response) => {
         const workspace = await this.service.create({
             ownerId: res.locals.userId, 
@@ -30,7 +30,7 @@ export default class WorkspacesController {
 
     @HttpMethod("get")
     @Route("/:workspaceId")
-    @RouteMiddlewares([authorizeMember])
+    @Middlewares([authorizeMember])
     public get = async (req:Request, res:Response) => {
         const workspace = await this.service.findById(req.params.workspaceId);
         return res.status(200).json(workspace);
@@ -48,7 +48,7 @@ export default class WorkspacesController {
 
     @HttpMethod("put")
     @Route("/:workspaceId")
-    @RouteMiddlewares([authorizeWorkspaceOwner, validateBody(WorkspaceSchema)])
+    @Middlewares([authorizeWorkspaceOwner, validateBody(WorkspaceSchema)])
     public update = async (req:Request, res:Response) => {
         const workspace = await this.service.update(req.params.workspaceId, req.body);
         return res.status(200).json(workspace);
@@ -56,7 +56,7 @@ export default class WorkspacesController {
 
     @HttpMethod("delete")
     @Route("/:workspaceId")
-    @RouteMiddlewares([authorizeWorkspaceOwner])
+    @Middlewares([authorizeWorkspaceOwner])
     public delete = async (req:Request, res:Response) => {
         await this.service.delete(req.params.workspaceId);
         return res.status(204).send();
