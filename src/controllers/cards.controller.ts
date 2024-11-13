@@ -45,4 +45,12 @@ export default class CardsController {
         const card = await this.service.update(req.params.cardId, req.body)
         return res.status(200).json(card);
     }
+
+    @HttpMethod("delete")
+    @Route("/:cardId")
+    @Middlewares([authorizeByBoardRole(["Editor", "Owner"])])
+    public delete = async (req:Request, res:Response) => {
+        await this.service.delete(req.params.cardId)
+        return res.status(204).send();
+    }
 }
