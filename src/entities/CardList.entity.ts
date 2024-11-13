@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
-import BaseEntity from "./common/BaseEntity.entity";
+import BaseEntity from "../common/BaseEntity.entity";
 import Board from "./Board.entity";
 import Card from "./Card.entity";
 

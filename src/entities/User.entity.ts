@@ -1,5 +1,5 @@
 import { BeforeInsert, BeforeUpdate, Column, Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
-import BaseEntity from "./common/BaseEntity.entity";
+import BaseEntity from "../common/BaseEntity.entity";
 import UserDetails from "./UserDetails.entity";
 import { hashSync } from "bcryptjs";
 import Member from "./Member.entity";

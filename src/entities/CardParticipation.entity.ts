@@ -1,6 +1,6 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
-import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
+import NoIdBaseEntity from "../common/NoIdBaseEntity.entity";
 import Card from "./Card.entity";
 
 @Entity("card_participations")

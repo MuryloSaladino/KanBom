@@ -1,5 +1,5 @@
 import { DeepPartial, FindManyOptions, FindOneOptions, FindOptionsRelations, Repository } from "typeorm";
-import BaseEntity from "../entities/common/BaseEntity.entity";
+import BaseEntity from "./BaseEntity.entity";
 import AppDataSource from "../data-source";
 import AppError from "../errors";
 

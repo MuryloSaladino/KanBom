@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
 import Card from "./Card.entity";
-import BaseEntity from "./common/BaseEntity.entity";
+import BaseEntity from "../common/BaseEntity.entity";
 
 export type TAttachment = "file" | "photo" | "link";
 

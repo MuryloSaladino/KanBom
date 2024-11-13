@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import CardList from "./CardList.entity";
-import BaseEntity from "./common/BaseEntity.entity";
+import BaseEntity from "../common/BaseEntity.entity";
 import CardParticipation from "./CardParticipation.entity";
 import CardLabel from "./CardLabel.entity";
 import CardLog from "./CardLog.entity";

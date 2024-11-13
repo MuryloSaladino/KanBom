@@ -1,5 +1,5 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
-import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
+import NoIdBaseEntity from "../common/NoIdBaseEntity.entity";
 import Card from "./Card.entity";
 import Label from "./Label.entity";
 

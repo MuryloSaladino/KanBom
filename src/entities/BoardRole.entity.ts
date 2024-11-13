@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import User from "./User.entity";
 import Board from "./Board.entity";
-import NoIdBaseEntity from "./common/NoIdBaseEntity.entity";
+import NoIdBaseEntity from "../common/NoIdBaseEntity.entity";
 import { IBoardRole } from "../types/boards.types";
 
 @Entity("board_roles")

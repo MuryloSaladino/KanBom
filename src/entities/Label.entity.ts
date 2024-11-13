@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import Board from "./Board.entity";
-import BaseEntity from "./common/BaseEntity.entity";
+import BaseEntity from "../common/BaseEntity.entity";
 
 @Entity("labels")
 export default class Label extends BaseEntity {
