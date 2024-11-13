@@ -24,6 +24,17 @@ export default class BoardsController {
         return res.status(201).json(board);
     }
 
+    @HttpMethod("get")
+    @Route("/:boardId")
+    @RouteMiddlewares([authorizeByBoardRole(["Reader", "Editor", "Owner"])])
+    public get = async (req:Request, res:Response) => {
+        const board = await this.service.findOne({
+            where: { id: req.params.boardId },
+            relations: { lists: true, labels: true }
+        });
+        return res.status(200).json(board);
+    }
+
     @HttpMethod("put")
     @Route("/:boardId")
     @RouteMiddlewares([authorizeByBoardRole(["Editor", "Owner"])])
