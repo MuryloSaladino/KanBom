@@ -39,7 +39,8 @@ export default class BaseService<TEntity extends BaseEntity> {
 
     public async update(id: TEntity["id"], payload: Omit<DeepPartial<TEntity>, "id">): Promise<TEntity> {
         const entity = await this.findById(id);
-        return await this.repo.save({ ...entity, ...payload });
+        const updated = this.repo.create({ ...entity, ...payload })
+        return await this.repo.save(updated);
     }
 
     public async delete(id: TEntity["id"]): Promise<void> {
