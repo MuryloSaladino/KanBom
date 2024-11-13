@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CardListsService from "../services/cardList.services";
+import CardListsService from "../services/card-list.services";
 import { Controller, ControllerMiddlewares, HttpMethod, Route, RouteMiddlewares } from "../decorators/api.decorators";
 import authenticate from "../middlewares/authenticate.middleware";
 import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
