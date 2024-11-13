@@ -7,4 +7,5 @@ export const CardListSchema = z.object({
 
 export const CardSchema = z.object({
     description: z.string().min(1).max(50),
+    detailedDescription: z.string(),
 }).strict();
