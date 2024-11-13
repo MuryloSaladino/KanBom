@@ -53,4 +53,20 @@ export default class CardsController {
         await this.service.delete(req.params.cardId)
         return res.status(204).send();
     }
+
+    @HttpMethod("post")
+    @Route("/:cardId/users/:userId")
+    @Middlewares([authorizeByBoardRole(["Editor", "Owner"])])
+    public addParticipant = async (req:Request, res:Response) => {
+        await this.service.addParticipant(req.params.cardId, req.params.userId);
+        return res.status(204).send();
+    }
+
+    @HttpMethod("delete")
+    @Route("/:cardId/users/:userId")
+    @Middlewares([authorizeByBoardRole(["Editor", "Owner"])])
+    public removeParticipant = async (req:Request, res:Response) => {
+        await this.service.removeParticipant(req.params.cardId, req.params.userId);
+        return res.status(204).send();
+    }
 }
