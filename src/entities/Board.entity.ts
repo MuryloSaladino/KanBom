@@ -3,6 +3,7 @@ import BaseEntity from "../common/BaseEntity.entity";
 import Workspace from "./Workspace.entity";
 import Label from "./Label.entity";
 import CardList from "./CardList.entity";
+import BoardRole from "./BoardRole.entity";
 
 @Entity("boards")
 export default class Board extends BaseEntity {
@@ -25,4 +26,7 @@ export default class Board extends BaseEntity {
 
     @OneToMany(() => CardList, (cl) => cl.board)
     lists?: CardList[];
+
+    @OneToMany(() => BoardRole, (br) => br.board)
+    participants?: BoardRole[];
 }
