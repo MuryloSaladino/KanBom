@@ -23,7 +23,7 @@ export default class BaseService<TEntity extends BaseEntity> {
     ): Promise<TEntity> {
         const entity = await this.repo.findOne({ where: { id } as any, relations })
 
-        if (!entity) throw new AppError(`Entity not found`);
+        if (!entity) throw new AppError(`${(this.repo.target as Function).name} not found`);
         return entity;
     }
 
@@ -33,7 +33,7 @@ export default class BaseService<TEntity extends BaseEntity> {
 
     public async findOne(options: FindOneOptions<TEntity>): Promise<TEntity> {
         const entity = await this.repo.findOne(options);
-        if(!entity) throw new AppError(`Entity not found`);
+        if(!entity) throw new AppError(`${(this.repo.target as Function).name} not found`);
         return entity;
     }
 
