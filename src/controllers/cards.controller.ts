@@ -5,6 +5,7 @@ import validateBody from "../middlewares/validateBody.middleware";
 import { CardSchema } from "../schemas/card.schema";
 import CardsService from "../services/cards.services";
 import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
+import { authorizeByCardAndBoardRole } from "../middlewares/cards.middlewares";
 
 @Controller("/cards")
 @Middlewares([authenticate])
@@ -14,7 +15,7 @@ export default class CardsController {
 
     @HttpMethod("post")
     @Route("/card-lists/:cardListId")
-    @Middlewares([authorizeByBoardRole(["Editor", "Owner"]), validateBody(CardSchema)])
+    @Middlewares([authorizeByCardAndBoardRole(["Editor", "Owner"]), validateBody(CardSchema)])
     public create = async (req:Request, res:Response) => {
         const card = await this.service.create({
             cardListId: req.params.cardListId,
@@ -25,7 +26,7 @@ export default class CardsController {
 
     @HttpMethod("get")
     @Route("/:cardId")
-    @Middlewares([authorizeByBoardRole(["Reader", "Editor", "Owner"])])
+    @Middlewares([authorizeByCardAndBoardRole(["Editor", "Owner"])])
     public getAllDetails = async (req:Request, res:Response) => {
         const card = await this.service.findOne({
             where: { id: req.params.cardId },
