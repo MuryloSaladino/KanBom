@@ -38,7 +38,7 @@ export default class BoardsController {
 
     @HttpMethod("get")
     @Route("/:boardId/users")
-    @Middlewares([authorizeByBoardRole(["Reader", "Editor", "Owner"])])
+    @Middlewares([authorizeMemberByBoard])
     public getParticipants = async (req:Request, res:Response) => {
         const board = await this.service.findOne({
             where: { id: req.params.boardId },
