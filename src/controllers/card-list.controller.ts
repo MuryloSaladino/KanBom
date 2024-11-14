@@ -3,6 +3,8 @@ import CardListsService from "../services/card-list.services";
 import { Controller, HttpMethod, Route, Middlewares } from "../decorators/api.decorators";
 import authenticate from "../middlewares/authenticate.middleware";
 import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
+import { authorizeMemberByBoard } from "../middlewares/workspaces.middlewares";
+import { authorizeByCardListAndBoardRole } from "../middlewares/cards.middlewares";
 
 
 @Controller("/card-lists")
@@ -24,7 +26,7 @@ export default class CardListsController {
 
     @HttpMethod("get")
     @Route("/boards/:boardId")
-    @Middlewares([authorizeByBoardRole(["Reader", "Editor", "Owner"])])
+    @Middlewares([authorizeMemberByBoard])
     public getByBoard = async (req:Request, res:Response) => {
         const cardLists = await this.service.findAll({
             relations: { cards: true },
@@ -35,7 +37,7 @@ export default class CardListsController {
 
     @HttpMethod("put")
     @Route("/:cardListId")
-    @Middlewares([authorizeByBoardRole(["Editor", "Owner"])])
+    @Middlewares([authorizeByCardListAndBoardRole(["Editor", "Owner"])])
     public update = async (req:Request, res:Response) => {
         const cardList = await this.service.update(req.params.cardListId, req.body);
         return res.status(200).json(cardList);
@@ -43,7 +45,7 @@ export default class CardListsController {
 
     @HttpMethod("delete")
     @Route("/:cardListId")
-    @Middlewares([authorizeByBoardRole(["Editor", "Owner"])])
+    @Middlewares([authorizeByCardListAndBoardRole(["Editor", "Owner"])])
     public delete = async (req:Request, res:Response) => {
         await this.service.delete(req.params.cardListId);
         return res.status(204).send();
