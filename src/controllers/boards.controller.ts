@@ -5,7 +5,7 @@ import authenticate from "../middlewares/authenticate.middleware";
 import validateBody from "../middlewares/validateBody.middleware";
 import { BoardSchema } from "../schemas/boards.schemas";
 import { authorizeByBoardRole } from "../middlewares/boards.middlewares";
-import { authorizeMemberByBoard } from "../middlewares/workspaces.middlewares";
+import { authorizeMember, authorizeMemberByBoard } from "../middlewares/workspaces.middlewares";
 
 @Controller("/boards")
 @Middlewares([authenticate])
@@ -15,7 +15,7 @@ export default class BoardsController {
 
     @HttpMethod("post")
     @Route("/workspaces/:workspaceId")
-    @Middlewares([validateBody(BoardSchema)])
+    @Middlewares([authorizeMember, validateBody(BoardSchema)])
     public create = async(req:Request, res:Response) => {
         const board = await this.service.create({ 
             workspaceId: req.params.workspaceId, 
