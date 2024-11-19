@@ -5,7 +5,6 @@ import validateBody from "../middlewares/validateBody.middleware";
 import { CardSchema } from "../schemas/card.schema";
 import CardsService from "../services/cards.services";
 import { authorizeByCardAndBoardRole, authorizeByCardListAndBoardRole } from "../middlewares/cards.middlewares";
-import { authorizeMemberByBoard } from "../middlewares/workspaces.middlewares";
 
 @Controller("/cards")
 @Middlewares([authenticate])
