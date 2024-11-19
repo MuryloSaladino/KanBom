@@ -34,6 +34,7 @@ export default class CardsController {
                 comments: true, 
                 labels: { label: true }, 
                 participations: { user: true },
+                logs: true,
             }
         });
         return res.status(200).json(card);
