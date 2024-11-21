@@ -7,6 +7,6 @@ export const UserSchema = z.object({
         birthdate: z.string().date(),
         firstName: z.string().min(2).max(50),
         lastName: z.string().min(2).max(255),
-        profilePicture: z.string().max(255).nullable()
+        profilePicture: z.string().max(255).nullable().optional()
     }).strict(),
 }).strict();
