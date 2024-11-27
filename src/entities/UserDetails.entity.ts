@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import FileEntity from "./File.entity";
 
 @Entity("user_details")
 export default class UserDetails {
@@ -15,6 +16,7 @@ export default class UserDetails {
     @Column({ type: "varchar", length: 150 })
     lastName?: string;
 
-    @Column({ type: "varchar", length: 1024, nullable: true, default: null })
-    profilePicture?: string | null;
+    @OneToOne(() => FileEntity, { nullable: true, onDelete: "CASCADE" })
+    @JoinColumn()
+    picture?: FileEntity;
 }
