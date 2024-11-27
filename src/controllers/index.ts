@@ -1,6 +1,7 @@
 import BoardsController from "./boards.controller";
 import CardListsController from "./card-list.controller";
 import CardsController from "./cards.controller";
+import FilesController from "./files.controller";
 import LoginController from "./login.controller";
 import MemebersController from "./members.controller";
 import NotificationsController from "./notifications.controller";
@@ -16,4 +17,5 @@ export default [
     MemebersController,
     BoardsController,
     CardsController,
+    FilesController,
 ]

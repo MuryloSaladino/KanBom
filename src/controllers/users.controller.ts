@@ -21,7 +21,7 @@ export default class UsersController {
     @Middlewares([authenticate])
     public getUserByJWT = async (_req:Request, res:Response) => {
         const user = await this.service
-            .findById(res.locals.userId, { details: true });
+            .findById(res.locals.userId, { details: { picture: true } });
         return res.status(201).json(user)
     }
 
