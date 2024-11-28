@@ -21,11 +21,7 @@ export const UserSchema = z.object({
             .string()
             .min(2, "At least 2 characters"),
         birthdate: z
-            .string(),
-        profilePicture: z
             .string()
-            .nullable()
-            .optional()
     }),
 }).refine(({ password, confirm }) => password === confirm, {
     message: "Password doesn't match",

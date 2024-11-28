@@ -3,7 +3,7 @@ import UsersService from "../services/users.services";
 import validateBody from "../middlewares/validateBody.middleware";
 import { UserSchema } from "../schemas/users.schemas";
 import authenticate from "../middlewares/authenticate.middleware";
-import { Controller, HttpMethod, Middlewares } from "../decorators/api.decorators";
+import { Controller, HttpMethod, Middlewares, Route } from "../decorators/api.decorators";
 
 @Controller("/users")
 export default class UsersController {
@@ -29,6 +29,14 @@ export default class UsersController {
     @Middlewares([authenticate])
     public updateUserByJWT = async (req:Request, res:Response) => {
         const user = await this.service.update(res.locals.userId, req.body);
+        return res.status(200).json({ ...user, password: undefined })
+    }
+
+    @HttpMethod("put")
+    @Middlewares([authenticate])
+    @Route("/file/:fileId")
+    public updateUserPhotoByJWT = async (req:Request, res:Response) => {
+        const user = await this.service.updatePhotoId(res.locals.userId, req.params.fileId)
         return res.status(200).json({ ...user, password: undefined })
     }
 
