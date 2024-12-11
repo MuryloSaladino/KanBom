@@ -32,7 +32,7 @@ export function authorizeByCardListAndBoardRole(roles:IBoardRole[]) {
             .leftJoin("boards", "b", "br.boardId = b.id")
             .leftJoin("users", "u", "br.userId = u.id")
             .leftJoin("card_lists", "cl", "cl.boardId = b.id")
-            .where("cl.id = :cardListId", { cardId: req.params.cardListId })
+            .where("cl.id = :cardListId", { cardListId: req.params.cardListId })
             .andWhere("u.id = :userId", { userId: res.locals.userId })
             .getRawOne()
 
