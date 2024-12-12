@@ -24,6 +24,17 @@ export default class CardsController {
     }
 
     @HttpMethod("get")
+    @Route("/card-lists/:cardListId")
+    @Middlewares([authorizeByCardListAndBoardRole(["Reader", "Editor", "Owner"])])
+    public getByCardList = async (req:Request, res:Response) => {
+        const card = await this.service.findAll({
+            where: { cardListId: req.params.cardListId },
+            order: { index: "ASC" }
+        });
+        return res.status(201).json(card);
+    }
+
+    @HttpMethod("get")
     @Route("/:cardId")
     @Middlewares([authorizeByCardAndBoardRole(["Reader", "Editor", "Owner"])])
     public getAllDetails = async (req:Request, res:Response) => {
