@@ -12,6 +12,9 @@ export default class CardList extends BaseEntity {
     @ManyToOne(() => Board)
     board?: Board;
 
+    @Column({ type: "int", default: 0 })
+    index?: number;
+
     @Column()
     name?: string;
 
