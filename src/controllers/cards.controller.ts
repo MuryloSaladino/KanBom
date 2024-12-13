@@ -58,6 +58,14 @@ export default class CardsController {
         return res.status(200).json(card);
     }
 
+    @HttpMethod("patch")
+    @Route("/:cardId/card-lists/:cardListId")
+    @Middlewares([authorizeByCardAndBoardRole(["Editor", "Owner"])])
+    public moveCard = async (req:Request, res:Response) => {
+        await this.service.moveCard(req.params.cardId, req.params.cardListId)
+        return res.status(204).send();
+    }
+
     @HttpMethod("delete")
     @Route("/:cardId")
     @Middlewares([authorizeByCardAndBoardRole(["Editor", "Owner"])])
